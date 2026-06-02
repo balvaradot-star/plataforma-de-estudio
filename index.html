@@ -3,148 +3,198 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Fe de Jesús | Plataforma de Estudio Bíblico</title>
+    <title>Conoce la Biblia | Plataforma de Estudio Bíblico</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Libre+Baskerville:ital@0;1&display=swap" rel="stylesheet">
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
         :root{
-            --bg:#061018;
-            --panel:rgba(12,23,36,.92);
-            --panel-soft:rgba(255,255,255,.06);
-            --line:rgba(255,255,255,.13);
+            --bg:#040a12;
+            --panel:rgba(10, 20, 32, 0.94);
+            --panel-soft:rgba(255,255,255,.04);
+            --line:rgba(255,255,255,.11);
             --gold:#ffd166;
+            --gold-hover:#f4be41;
             --sky:#56c7ff;
             --mint:#76e4b3;
             --rose:#ff8fab;
             --text:#f8fafc;
-            --muted:#a8b3c2;
+            --muted:#94a3b8;
+            --radius-lg:12px;
+            --radius-md:8px;
+            --shadow-lg:0 10px 25px -5px rgba(0,0,0,0.5), 0 8px 10px -6px rgba(0,0,0,0.5);
         }
-        body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+        body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
         button,input,textarea,select{font-family:inherit}
+        
+        /* Fondo animado y transiciones */
         .bg-overlay{
             position:fixed;inset:0;z-index:-2;background-size:cover;background-position:center;
-            filter:brightness(.25) saturate(.95);transition:background-image .7s ease;
+            filter:brightness(.20) saturate(.90);transition:background-image .9s cubic-bezier(0.4, 0, 0.2, 1);
             background-image:url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1800');
         }
-        .page-shade{position:fixed;inset:0;z-index:-1;background:linear-gradient(120deg,rgba(2,6,23,.9),rgba(3,7,18,.62) 48%,rgba(0,0,0,.76));}
-        .app-shell{width:min(1180px,calc(100% - 36px));margin:0 auto;padding:32px 0 42px;}
-        .topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:24px;}
-        .brand-kicker{color:var(--gold);text-transform:uppercase;letter-spacing:2.5px;font-weight:700;font-size:.75rem;margin-bottom:5px;}
-        .brand-title{font-size:clamp(1.8rem,4vw,3.2rem);line-height:1.08;color:#fff;}
-        .brand-subtitle{font-family:'Libre Baskerville',serif;color:#d8dee9;font-size:1.08rem;margin-top:8px;}
-        .top-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;}
-        .btn{border:0;border-radius:999px;padding:13px 18px;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:.7px;transition:.2s ease;white-space:nowrap;}
-        .btn-primary{background:var(--gold);color:#08111d;}
-        .btn-secondary{background:rgba(255,255,255,.1);color:#fff;border:1px solid var(--line);}
-        .btn-info{background:var(--sky);color:#061018;}
-        .btn-danger{background:rgba(255,143,171,.16);color:#ffd1dc;border:1px solid rgba(255,143,171,.32);}
-        .btn:hover{transform:translateY(-1px);filter:brightness(1.08)}
-        .btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+        .page-shade{position:fixed;inset:0;z-index:-1;background:linear-gradient(135deg,rgba(2,6,23,.95),rgba(4,10,18,.80) 50%,rgba(0,0,0,.9));}
+        
+        .app-shell{width:min(1200px,calc(100% - 32px));margin:0 auto;padding:40px 0 60px;}
+        
+        /* Encabezado Principal */
+        .topbar{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:32px;}
+        .brand-kicker{color:var(--gold);text-transform:uppercase;letter-spacing:3px;font-weight:700;font-size:.75rem;margin-bottom:6px;}
+        .brand-title{font-size:clamp(2rem, 5vw, 3.5rem);line-height:1.05;color:#fff;font-weight:700;}
+        .brand-subtitle{font-family:'Libre Baskerville',serif;color:#e2e8f0;font-size:1.1rem;margin-top:8px;}
+        .top-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end;}
+        
+        .btn{border:0;border-radius:999px;padding:14px 24px;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:1px;transition:all .25s ease;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:8px;}
+        .btn-primary{background:linear-gradient(135deg, var(--gold), #f39c12);color:#08111d;}
+        .btn-primary:hover{transform:translateY(-2px);box-shadow:0 4px 15px rgba(255, 209, 102, 0.3);background:var(--gold-hover);}
+        .btn-secondary{background:rgba(255,255,255,.06);color:#fff;border:1px solid var(--line);}
+        .btn-secondary:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.3);transform:translateY(-1px);}
+        .btn-danger{background:rgba(239, 68, 68, 0.15);color:#fca5a5;border:1px solid rgba(239, 68, 68, 0.3);}
+        .btn-danger:hover{background:rgba(239, 68, 68, 0.3);border-color:rgba(239, 68, 68, 0.6);transform:translateY(-1px);}
+        .btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important;box-shadow:none!important;}
+        
         .hidden{display:none!important}
-        .intro-layout{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:22px;align-items:start;}
-        .hero-panel,.form-panel,.card,.admin-panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;backdrop-filter:blur(12px);}
-        .hero-panel{padding:30px;}
-        .hero-panel p{color:var(--muted);line-height:1.65;max-width:760px;margin:14px 0 0;}
-        .method-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:24px;}
-        .method-item{background:var(--panel-soft);border:1px solid var(--line);border-radius:8px;padding:16px;min-height:118px;}
-        .method-item strong{display:block;color:var(--gold);margin-bottom:8px;}
-        .method-item span{color:#cbd5e1;font-size:.9rem;line-height:1.45;}
-        .form-panel{padding:24px;position:sticky;top:24px;}
-        .form-panel h2,.admin-panel h2{font-size:1.25rem;margin-bottom:14px;}
-        .field{margin-bottom:14px;}
-        .field label{display:block;color:var(--gold);font-size:.78rem;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:7px;}
-        .field input,.field textarea,.field select{width:100%;background:rgba(0,0,0,.32);color:#fff;border:1px solid var(--line);border-radius:8px;padding:12px 13px;outline:none;}
-        .field textarea{min-height:86px;resize:vertical}
-        .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(255,209,102,.12);}
-        .student-pill{display:flex;align-items:center;gap:10px;background:rgba(118,228,179,.1);border:1px solid rgba(118,228,179,.25);border-radius:999px;padding:10px 14px;color:#d8ffec;font-weight:600;}
-        .section-head{display:flex;justify-content:space-between;align-items:end;gap:16px;margin:28px 0 16px;}
-        .section-head h2{font-size:1.45rem;}
-        .section-head p{color:var(--muted);font-size:.95rem;margin-top:4px;}
-        .filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
-        .filters input,.filters select{background:rgba(0,0,0,.3);color:#fff;border:1px solid var(--line);border-radius:999px;padding:11px 14px;outline:none;min-width:210px;}
-        .beliefs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:15px;}
-        .belief-card{background:rgba(12,23,36,.88);border:1px solid var(--line);border-radius:8px;padding:18px;display:flex;flex-direction:column;min-height:238px;transition:.2s ease;}
-        .belief-card:hover{transform:translateY(-3px);border-color:rgba(255,209,102,.65);background:rgba(12,23,36,.96);}
-        .belief-card.locked{opacity:.62}
-        .belief-card.locked:hover{transform:none;border-color:var(--line)}
-        .belief-meta{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:12px;}
-        .belief-num{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:rgba(255,209,102,.13);color:var(--gold);font-weight:800;}
-        .category{font-size:.72rem;letter-spacing:1px;text-transform:uppercase;color:#d7ecff;background:rgba(86,199,255,.12);border:1px solid rgba(86,199,255,.25);padding:5px 8px;border-radius:999px;}
-        .belief-card h3{font-size:1.08rem;line-height:1.28;margin-bottom:9px;}
-        .belief-card p{color:#c5cedb;line-height:1.52;font-size:.9rem;flex:1;}
-        .status-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:16px;flex-wrap:wrap;}
-        .belief-card .btn{font-size:.78rem;line-height:1.15;max-width:170px;min-width:0;white-space:normal;padding:12px 14px;}
-        .status{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);}
-        .status.accepted{color:var(--mint)}
-        .study-view{max-width:930px;margin:0 auto;}
-        .study-header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:18px;}
-        .progress{height:8px;background:rgba(255,255,255,.11);border-radius:999px;overflow:hidden;margin-bottom:20px;}
-        .progress-bar{height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--mint));transition:width .3s;}
-        .step{display:none;animation:fadeIn .35s ease both;}
+        
+        /* Layouts de Paneles */
+        .intro-layout{display:grid;grid-template-columns:minmax(0,1.2fr) 1fr;gap:30px;align-items:start;}
+        .hero-panel,.form-panel,.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-lg);backdrop-filter:blur(16px);box-shadow:var(--shadow-lg);}
+        
+        .hero-panel{padding:40px;}
+        .hero-panel h2{font-size:1.6rem;color:#fff;margin-bottom:12px;font-weight:600;}
+        .hero-panel p{color:var(--muted);line-height:1.7;max-width:760px;margin:14px 0 0;font-size:0.95rem;}
+        
+        .method-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:30px;}
+        .method-item{background:var(--panel-soft);border:1px solid var(--line);border-radius:var(--radius-md);padding:20px;min-height:130px;transition:all 0.2s;}
+        .method-item:hover{background:rgba(255,255,255,.08);border-color:rgba(255,209,102,.3);}
+        .method-item strong{display:block;color:var(--gold);margin-bottom:8px;font-size:0.95rem;letter-spacing:0.5px;}
+        .method-item span{color:#cbd5e1;font-size:.85rem;line-height:1.5;}
+        
+        .form-panel{padding:35px;position:sticky;top:30px;}
+        .form-panel h2{font-size:1.4rem;margin-bottom:20px;font-weight:600;}
+        
+        .field{margin-bottom:18px;}
+        .field label{display:block;color:var(--gold);font-size:.75rem;text-transform:uppercase;letter-spacing:1.5px;font-weight:700;margin-bottom:8px;}
+        .field input,.field textarea,.field select{width:100%;background:rgba(0,0,0,.4);color:#fff;border:1px solid var(--line);border-radius:var(--radius-md);padding:14px;outline:none;transition:all .25s ease;font-size:0.92rem;}
+        .field textarea{min-height:100px;resize:vertical}
+        .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(255,209,102,.15);background:rgba(0,0,0,.6);}
+        
+        .student-pill{display:flex;align-items:center;gap:10px;background:rgba(118,228,179,.08);border:1px solid rgba(118,228,179,.25);border-radius:999px;padding:10px 18px;color:#d8ffec;font-weight:600;font-size:0.88rem;}
+        
+        .section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin:40px 0 24px;}
+        .section-head h2{font-size:1.6rem;font-weight:600;}
+        .section-head p{color:var(--muted);font-size:.92rem;margin-top:6px;}
+        
+        .filters{display:flex;gap:12px;flex-wrap:wrap;align-items:center;}
+        .filters input,.filters select{background:rgba(0,0,0,.4);color:#fff;border:1px solid var(--line);border-radius:999px;padding:12px 20px;outline:none;min-width:220px;transition:all 0.2s;}
+        .filters input:focus, .filters select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(255,209,102,.15);}
+        
+        .beliefs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;}
+        .belief-card{background:rgba(10,20,32,.85);border:1px solid var(--line);border-radius:var(--radius-lg);padding:24px;display:flex;flex-direction:column;min-height:260px;transition:all .3s cubic-bezier(0.4, 0, 0.2, 1);position:relative;overflow:hidden;}
+        .belief-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:4px;background:transparent;transition:background-color .3s;}
+        .belief-card:hover{transform:translateY(-5px);border-color:rgba(255,209,102,.5);background:rgba(12,23,36,.95);box-shadow:var(--shadow-lg);}
+        .belief-card:hover::before{background:var(--gold);}
+        
+        .belief-card.locked{opacity:.5;cursor:not-allowed;}
+        .belief-card.locked:hover{transform:none;border-color:var(--line);box-shadow:none;}
+        .belief-card.locked:hover::before{background:transparent;}
+        
+        .belief-meta{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:16px;}
+        .belief-num{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:rgba(255,209,102,.12);color:var(--gold);font-weight:800;font-size:0.95rem;border:1px solid rgba(255,209,102,.2);}
+        .category{font-size:.7rem;letter-spacing:1px;text-transform:uppercase;color:#d7ecff;background:rgba(86,199,255,.1);border:1px solid rgba(86,199,255,.2);padding:4px 10px;border-radius:999px;font-weight:600;}
+        
+        .belief-card h3{font-size:1.15rem;line-height:1.3;margin-bottom:10px;font-weight:600;}
+        .belief-card p{color:#cbd5e1;line-height:1.55;font-size:.88rem;flex:1;}
+        
+        .status-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:20px;flex-wrap:wrap;}
+        .belief-card .btn{font-size:.75rem;padding:10px 18px;}
+        .status{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--muted);}
+        .status.accepted{color:var(--mint);display:inline-flex;align-items:center;gap:4px;}
+        
+        /* Vista de Estudio */
+        .study-view{max-width:900px;margin:0 auto;}
+        .study-header{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:24px;}
+        .progress{height:8px;background:rgba(255,255,255,.08);border-radius:999px;overflow:hidden;margin-bottom:30px;}
+        .progress-bar{height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--mint));transition:width .4s ease;}
+        
+        .step{display:none;animation:fadeIn .45s cubic-bezier(0.4, 0, 0.2, 1) both;}
         .step.active{display:block}
-        @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-        .card{padding:32px;}
-        .tag{color:var(--gold);text-transform:uppercase;letter-spacing:2.4px;font-weight:700;font-size:.76rem;margin-bottom:10px;}
-        .question{font-size:clamp(1.45rem,3vw,2.15rem);line-height:1.25;margin-bottom:20px;}
-        .verses-grid{display:grid;gap:10px;margin:18px 0 22px;}
-        .verse-item{background:rgba(255,255,255,.06);border-left:3px solid var(--gold);border-radius:8px;padding:14px;color:#e8eef7;font-size:.92rem;line-height:1.55;}
-        .verse-item strong{display:block;color:var(--gold);margin-bottom:4px;}
-        .theology-box{background:rgba(86,199,255,.09);border:1px solid rgba(86,199,255,.24);border-radius:8px;padding:18px;margin-top:18px;}
-        .theology-box h4{color:var(--sky);font-size:.9rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;}
-        .theology-box p{color:#e2e8f0;line-height:1.6;font-size:.92rem;}
-        .nav-buttons{display:flex;gap:12px;margin-top:20px;}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+        
+        .card{padding:40px;}
+        .tag{color:var(--gold);text-transform:uppercase;letter-spacing:3px;font-weight:700;font-size:.75rem;margin-bottom:12px;}
+        .question{font-size:clamp(1.5rem,3.5vw,2.2rem);line-height:1.25;margin-bottom:24px;font-weight:600;color:#fff;}
+        
+        .verses-grid{display:grid;gap:12px;margin:20px 0 24px;}
+        .verse-item{background:rgba(255,255,255,.05);border-left:4px solid var(--gold);border-radius:var(--radius-md);padding:16px;color:#e2e8f0;font-size:.95rem;line-height:1.6;}
+        .verse-item strong{display:block;color:var(--gold);margin-bottom:6px;font-size:0.9rem;}
+        
+        .theology-box{background:rgba(86,199,255,.07);border:1px solid rgba(86,199,255,.18);border-radius:var(--radius-md);padding:20px;margin-top:24px;}
+        .theology-box h4{color:var(--sky);font-size:.85rem;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;font-weight:700;}
+        .theology-box p{color:#e2e8f0;line-height:1.65;font-size:.92rem;}
+        
+        .nav-buttons{display:flex;gap:14px;margin-top:30px;}
         .nav-buttons .btn{flex:1}
-        .decision-box{background:rgba(118,228,179,.1);border:1px solid rgba(118,228,179,.26);border-radius:8px;padding:20px;margin:20px 0;text-align:left;}
-        .decision-box label{display:flex;align-items:flex-start;gap:12px;color:#effff7;font-weight:600;line-height:1.5;cursor:pointer;}
-        .decision-box input{width:20px;height:20px;margin-top:2px;accent-color:var(--gold);flex:0 0 auto;}
-        .admin-panel{padding:24px;margin-top:18px;}
-        .message-panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:22px;margin:24px 0;}
-        .message-item{background:var(--panel-soft);border:1px solid var(--line);border-radius:8px;padding:14px;margin-top:12px;}
-        .message-item strong{color:var(--gold);display:block;margin-bottom:6px;}
-        .message-answer{border-left:3px solid var(--mint);padding-left:12px;margin-top:10px;color:#d8ffec;}
-        .admin-auth-panel{max-width:520px;margin:0 auto;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:26px;}
-        .portal-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px;}
-        .admin-entry{background:rgba(86,199,255,.09);border:1px solid rgba(86,199,255,.24);border-radius:8px;padding:20px;margin-top:22px;}
-        .student-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;background:rgba(118,228,179,.1);border:1px solid rgba(118,228,179,.24);border-radius:8px;padding:16px;margin:20px 0;}
-        .student-toolbar strong{color:var(--mint)}
-        .stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:16px 0 18px;}
-        .stat{background:var(--panel-soft);border:1px solid var(--line);border-radius:8px;padding:14px;}
-        .stat strong{font-size:1.55rem;color:var(--gold);display:block;}
-        .stat span{font-size:.82rem;color:var(--muted);}
-        .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:8px;}
-        table{width:100%;border-collapse:collapse;min-width:760px;background:rgba(0,0,0,.2);}
-        th,td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;font-size:.88rem;vertical-align:top;}
-        th{color:var(--gold);font-size:.75rem;text-transform:uppercase;letter-spacing:1px;background:rgba(255,255,255,.05);}
-        td{color:#e2e8f0}
-        .student-list{display:grid;gap:12px;margin-bottom:22px;}
-        .student-card{background:rgba(0,0,0,.22);border:1px solid var(--line);border-radius:8px;overflow:hidden;}
-        .student-card summary{cursor:pointer;list-style:none;padding:16px 18px;display:grid;grid-template-columns:minmax(170px,1.4fr) repeat(4,minmax(85px,.6fr));gap:12px;align-items:center;}
-        .student-card summary::-webkit-details-marker{display:none}
-        .student-card summary strong{color:#fff;display:block}
-        .student-card summary span{color:var(--muted);font-size:.82rem}
-        .student-card-body{border-top:1px solid var(--line);padding:16px 18px;display:grid;gap:14px;}
-        .mini-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;}
-        .mini-box{background:var(--panel-soft);border:1px solid var(--line);border-radius:8px;padding:12px;}
-        .mini-box strong{color:var(--gold);display:block;margin-bottom:4px;}
-        .small-muted{color:var(--muted);font-size:.86rem;line-height:1.45;}
-        .signature{text-align:center;color:rgba(255,255,255,.48);font-size:.78rem;letter-spacing:1px;margin-top:26px;}
-        @media(max-width:900px){
+        
+        .decision-box{background:rgba(118,228,179,.08);border:1px solid rgba(118,228,179,.2);border-radius:var(--radius-md);padding:24px;margin:24px 0;}
+        .decision-box label{display:flex;align-items:flex-start;gap:14px;color:#effff7;font-weight:600;line-height:1.6;cursor:pointer;font-size:1rem;}
+        .decision-box input{width:22px;height:22px;margin-top:3px;accent-color:var(--gold);flex:0 0 auto;}
+        
+        .student-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;background:rgba(118,228,179,.08);border:1px solid rgba(118,228,179,.2);border-radius:var(--radius-lg);padding:20px;margin:24px 0;}
+        .student-toolbar strong{color:var(--mint);font-size:1.1rem;}
+        
+        .signature{text-align:center;color:rgba(255,255,255,.35);font-size:.75rem;letter-spacing:1.5px;margin-top:40px;text-transform:uppercase;}
+        
+        .toast-container{
+            position:fixed;bottom:24px;right:24px;z-index:9999;
+            display:flex;flex-direction:column;gap:10px;pointer-events:none;
+        }
+        .toast{
+            background:rgba(10, 25, 47, 0.95);
+            border-left:4px solid var(--gold);
+            color:#fff;padding:16px 20px;border-radius:6px;
+            box-shadow:var(--shadow-lg);backdrop-filter:blur(10px);
+            font-size:0.9rem;font-weight:500;min-width:280px;max-width:400px;
+            display:flex;align-items:center;gap:12px;
+            transform:translateX(120%);transition:transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events:auto;border:1px solid rgba(255,255,255,0.08);border-left-width:4px;
+        }
+        .toast.show{transform:translateX(0);}
+        .toast-success{border-left-color:var(--mint);}
+        .toast-error{border-left-color:var(--rose);}
+        .toast-info{border-left-color:var(--sky);}
+        
+        .custom-modal-overlay{
+            position:fixed;inset:0;background:rgba(2, 6, 12, 0.85);
+            backdrop-filter:blur(8px);z-index:10000;
+            display:grid;place-items:center;padding:20px;
+            opacity:0;pointer-events:none;transition:opacity 0.25s ease;
+        }
+        .custom-modal-overlay.show{opacity:1;pointer-events:auto;}
+        .custom-modal{
+            background:var(--panel);border:1px solid var(--line);
+            border-radius:var(--radius-lg);padding:30px;max-width:480px;width:100%;
+            box-shadow:var(--shadow-lg);transform:scale(0.92);transition:transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .custom-modal-overlay.show .custom-modal{transform:scale(1);}
+        .custom-modal h3{font-size:1.3rem;margin-bottom:12px;color:#fff;}
+        .custom-modal p{color:#cbd5e1;font-size:0.95rem;line-height:1.6;margin-bottom:24px;}
+        .custom-modal-actions{display:flex;justify-content:flex-end;gap:12px;}
+
+        @media(max-width:960px){
             .intro-layout{grid-template-columns:1fr}
             .form-panel{position:static}
-            .method-grid,.stats-grid{grid-template-columns:1fr 1fr}
+            .method-grid{grid-template-columns:1fr 1fr}
             .topbar,.section-head,.study-header{align-items:flex-start;flex-direction:column}
-            .top-actions{justify-content:flex-start}
+            .top-actions{justify-content:flex-start;width:100%;}
         }
         @media(max-width:640px){
-            .app-shell{width:min(100% - 24px,1180px);padding-top:20px}
-            .method-grid,.stats-grid{grid-template-columns:1fr}
+            .app-shell{width:min(100% - 24px,1200px);padding-top:24px}
+            .method-grid{grid-template-columns:1fr}
             .filters input,.filters select{min-width:100%;width:100%}
-            .card,.hero-panel,.form-panel,.admin-panel{padding:20px}
+            .card,.hero-panel,.form-panel{padding:24px}
             .nav-buttons{flex-direction:column-reverse}
             .btn{width:100%}
-            .belief-card .btn{max-width:none;width:auto}
-            .portal-actions,.student-toolbar{grid-template-columns:1fr;display:grid}
-            .student-card summary{grid-template-columns:1fr}
+            .belief-card .btn{max-width:none;width:100%}
+            .toast{min-width:calc(100vw - 48px);right:24px;}
         }
     </style>
 </head>
@@ -152,58 +202,50 @@
 <div class="bg-overlay" id="bg-overlay"></div>
 <div class="page-shade"></div>
 
+<!-- CONTENEDOR DE TOASTS -->
+<div class="toast-container" id="toast-container"></div>
+
+<!-- DIÁLOGO MODAL CONFIRMAR ACCIÓN -->
+<div class="custom-modal-overlay" id="custom-modal-overlay">
+    <div class="custom-modal">
+        <h3 id="modal-title">Confirmar Acción</h3>
+        <p id="modal-desc">¿Estás seguro de que deseas continuar con esta acción?</p>
+        <div class="custom-modal-actions">
+            <button class="btn btn-secondary" id="modal-cancel-btn">Cancelar</button>
+            <button class="btn btn-primary" id="modal-confirm-btn">Confirmar</button>
+        </div>
+    </div>
+</div>
+
 <main class="app-shell">
     <section id="home-view">
         <div class="topbar">
             <div>
                 <div class="brand-kicker">Estudiemos juntos la Biblia</div>
-                <h1 class="brand-title">La Fe de Jesús</h1>
-                <div class="brand-subtitle">20 lecciones bíblicas interactivas | Pr. Bladimir Alvarado</div>
+                <h1 class="brand-title">Conoce la Biblia</h1>
+                <div class="brand-subtitle">20 lecciones bíblicas interactivas</div>
             </div>
         </div>
 
         <div class="intro-layout" id="landing-panel">
             <div class="hero-panel">
                 <h2>Bienvenido a la plataforma de estudio bíblico.</h2>
-                <p>Selecciona tu rol para entrar al espacio correcto. El estudiante solo verá su registro y las lecciones bíblicas; el administrador tendrá un panel privado para consultar estudiantes, avance y decisiones.</p>
+                <p>Estudia y profundiza en las verdades bíblicas de forma progresiva. Tu progreso y avance se sincronizarán para que puedas dar un seguimiento visual y autogestionado de cada lección.</p>
                 <div class="method-grid">
-                    <div class="method-item"><strong>1. Registro</strong><span>Se guarda el nombre y la información básica del estudiante.</span></div>
-                    <div class="method-item"><strong>2. Estudio</strong><span>La persona avanza por las lecciones y deja sus respuestas.</span></div>
-                    <div class="method-item"><strong>3. Seguimiento</strong><span>El administrador revisa lecciones iniciadas, terminadas y aceptadas.</span></div>
-                </div>
-                <div class="admin-entry">
-                    <h2>Entrar a la plataforma</h2>
-                    <p>Elige el rol que corresponde antes de continuar.</p>
-                    <div class="portal-actions">
-                        <button class="btn btn-primary" onclick="showStudentRegistration()">Soy estudiante</button>
-                        <button class="btn btn-info" onclick="showAdmin()">Soy admin</button>
-                    </div>
+                    <div class="method-item"><strong>1. Ingresar</strong><span>Accede de manera directa y libre con solo un clic.</span></div>
+                    <div class="method-item"><strong>2. Aprender</strong><span>Responde las preguntas analizando cada cita de las Sagradas Escrituras.</span></div>
+                    <div class="method-item"><strong>3. Crecer</strong><span>Descarga tus reflexiones y avanza paso a paso en tu fe.</span></div>
                 </div>
             </div>
 
-            <aside class="form-panel hidden" id="student-registration">
-                <h2>Registro del estudiante</h2>
-                <div id="student-summary" class="student-pill hidden"></div>
-                <form id="student-form" onsubmit="saveStudent(event)">
-                    <div class="field">
-                        <label for="student-name">Nombre completo</label>
-                        <input id="student-name" required autocomplete="name" placeholder="Ej. María González">
-                    </div>
-                    <div class="field">
-                        <label for="student-phone">Teléfono o WhatsApp</label>
-                        <input id="student-phone" required autocomplete="tel" inputmode="tel" placeholder="Ej. 300 000 0000">
-                    </div>
-                    <div class="field">
-                        <label for="student-email">Correo</label>
-                        <input id="student-email" required autocomplete="email" type="email" placeholder="estudiante@correo.com">
-                    </div>
-                    <div class="field">
-                        <label for="student-password">Contraseña</label>
-                        <input id="student-password" required autocomplete="new-password" type="password" minlength="6" placeholder="Mínimo 6 caracteres">
-                    </div>
-                    <button class="btn btn-primary" type="submit">Registrarme y entrar</button>
-                </form>
-                <p class="small-muted" style="margin-top:12px;">Los datos se guardan localmente en este navegador. Para llevarlos a otro equipo, usa la opción exportar registros.</p>
+            <aside class="form-panel" id="unified-login-panel">
+                <h2>Entrar a la plataforma</h2>
+                <p class="small-muted" style="margin-bottom: 24px; line-height: 1.5;">El ingreso es libre. Haz clic en el botón de abajo para comenzar inmediatamente a estudiar sin registros ni contraseñas.</p>
+                
+                <button class="btn btn-primary" onclick="freeLogin()" style="width: 100%; padding: 16px 24px; font-size: 1.05rem; justify-content: center; gap: 10px;">
+                    <span>Entrar a la plataforma</span>
+                    <span>→</span>
+                </button>
             </aside>
         </div>
 
@@ -214,19 +256,8 @@
                     <strong id="active-student-name">Sin estudiante</strong>
                 </div>
                 <div class="top-actions">
-                    <button class="btn btn-secondary" onclick="showLanding()">Registrar otro estudiante</button>
                     <button class="btn btn-danger" onclick="logoutUser()">Cerrar sesión</button>
                 </div>
-            </div>
-            <div class="message-panel">
-                <h2>Pregúntale al pastor</h2>
-                <p class="small-muted">Escribe tu pregunta. El pastor podrá responder desde el panel de admin.</p>
-                <div class="field" style="margin-top:14px;">
-                    <label for="pastor-question-text">Tu pregunta</label>
-                    <textarea id="pastor-question-text" placeholder="Escribe aquí tu pregunta bíblica o pastoral..."></textarea>
-                </div>
-                <button class="btn btn-info" onclick="sendPastorQuestion()">Enviar pregunta</button>
-                <div id="student-questions-list"></div>
             </div>
             <div class="section-head">
                 <div>
@@ -250,7 +281,7 @@
                 </div>
             </div>
             <div class="beliefs-grid" id="beliefs-grid"></div>
-            <div class="signature">Basado en la serie bíblica La Fe de Jesús • Diseñado para estudio progresivo</div>
+            <div class="signature">Conoce la Biblia • Diseñado por Bladimir Alvarado</div>
         </div>
     </section>
 
@@ -262,96 +293,22 @@
         <div class="progress"><div class="progress-bar" id="bar"></div></div>
         <div id="dynamic-steps-container"></div>
     </section>
-
-    <section id="admin-auth-view" class="hidden">
-        <div class="topbar">
-            <div>
-                <div class="brand-kicker">Acceso administrativo</div>
-                <h1 class="brand-title">Panel privado</h1>
-                <div class="brand-subtitle">Registra o ingresa como administrador antes de ver la información.</div>
-            </div>
-            <button class="btn btn-secondary" onclick="exitAdminAuth()">Volver</button>
-        </div>
-        <div class="admin-auth-panel">
-            <h2 id="admin-auth-title">Registro de admin</h2>
-            <form id="admin-auth-form" onsubmit="handleAdminAuth(event)">
-                <div class="field" id="admin-name-field">
-                    <label for="admin-name">Nombre del admin</label>
-                    <input id="admin-name" autocomplete="name" placeholder="Ej. Pr. Bladimir Alvarado">
-                </div>
-                <div class="field">
-                    <label for="admin-email">Correo</label>
-                    <input id="admin-email" required autocomplete="email" type="email" placeholder="admin@iglesia.org">
-                </div>
-                <div class="field">
-                    <label for="admin-password">Contraseña</label>
-                    <input id="admin-password" required autocomplete="current-password" type="password" minlength="6" placeholder="Mínimo 6 caracteres">
-                </div>
-                <button class="btn btn-info" type="submit" id="admin-auth-submit">Crear admin</button>
-            </form>
-            <p class="small-muted" id="admin-auth-help" style="margin-top:12px;">Este primer registro crea el administrador local. Al subir a Firebase, estos campos pueden conectarse a Firebase Authentication.</p>
-        </div>
-    </section>
-
-    <section id="admin-view" class="hidden">
-        <div class="topbar">
-            <div>
-                <div class="brand-kicker">Seguimiento pastoral</div>
-                <h1 class="brand-title">Panel de registro</h1>
-                <div class="brand-subtitle">Consulta por estudiante, lección, avance y decisiones.</div>
-            </div>
-            <div class="top-actions">
-                <button class="btn btn-secondary" onclick="exitAdmin()">Volver</button>
-                <button class="btn btn-info" onclick="exportAllRecords()">Exportar CSV</button>
-                <button class="btn btn-secondary" onclick="logoutUser()">Cerrar sesión</button>
-                <button class="btn btn-danger" onclick="clearAllRecords()">Borrar todo</button>
-            </div>
-        </div>
-        <div class="admin-panel">
-            <h2>Resumen general</h2>
-            <div class="stats-grid" id="stats-grid"></div>
-            <div class="filters" style="margin:12px 0 18px;">
-                <input id="admin-search" oninput="renderAdmin()" placeholder="Buscar estudiante o lección...">
-                <select id="admin-belief-filter" onchange="renderAdmin()">
-                    <option value="">Todas las lecciones</option>
-                </select>
-            </div>
-            <h2 style="margin-top:18px;">Estudiantes inscritos</h2>
-            <div class="student-list" id="students-list"></div>
-            <h2>Detalle por lección</h2>
-            <div class="table-wrap">
-                <table>
-                    <thead>
-                    <tr>
-                        <th>Persona</th>
-                        <th>Contacto</th>
-                        <th>Lección</th>
-                        <th>Estado</th>
-                        <th>Fecha</th>
-                        <th>Observación</th>
-                    </tr>
-                    </thead>
-                    <tbody id="records-table"></tbody>
-                </table>
-            </div>
-            <h2 style="margin-top:22px;">Preguntas al pastor</h2>
-            <div id="admin-questions-list"></div>
-        </div>
-    </section>
 </main>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
 <script>
     const STORAGE_KEY = "plataforma_fe_de_jesus_v3";
     const CATEGORIES = ["Fundamentos","Comunión","Salvación","Esperanza","Obediencia","Iglesia","Vida cristiana","Mayordomía","Decisión"];
     const bgOverlay = document.getElementById("bg-overlay");
+    
     let currentStudentId = "";
     let currentStudyKey = "";
     let currentStepIndex = 0;
-    let adminSession = false;
-    const DEFAULT_ADMIN = {email:"admin@iglesia.com", password:"admin123456", name:"Administrador"};
+    
+    // Configuración Firebase básica
     const firebaseConfig = {
         apiKey: "",
         authDomain: "",
@@ -360,6 +317,7 @@
         messagingSenderId: "",
         appId: ""
     };
+    
     const firebaseEnabled = Boolean(firebaseConfig.apiKey && window.firebase);
     let firebaseAuth = null;
     let firebaseDb = null;
@@ -368,14 +326,60 @@
         firebaseAuth = firebase.auth();
         firebaseDb = firebase.firestore();
     }
+
+    function showToast(message, type = 'info') {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        
+        let icon = 'ℹ️';
+        if (type === 'success') icon = '✨';
+        if (type === 'error') icon = '⚠️';
+        
+        toast.innerHTML = `<span>${icon}</span> <div>${message}</div>`;
+        container.appendChild(toast);
+        
+        setTimeout(() => toast.classList.add('show'), 50);
+        
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 400);
+        }, 4000);
+    }
+
+    function customConfirm(title, description, onConfirm) {
+        const overlay = document.getElementById('custom-modal-overlay');
+        const titleEl = document.getElementById('modal-title');
+        const descEl = document.getElementById('modal-desc');
+        const cancelBtn = document.getElementById('modal-cancel-btn');
+        const confirmBtn = document.getElementById('modal-confirm-btn');
+        
+        titleEl.textContent = title;
+        descEl.textContent = description;
+        overlay.classList.add('show');
+        
+        const close = () => {
+            overlay.classList.remove('show');
+            cancelBtn.removeEventListener('click', onCancel);
+            confirmBtn.removeEventListener('click', onOk);
+        };
+        
+        const onCancel = () => close();
+        const onOk = () => { close(); onConfirm(); };
+        
+        cancelBtn.addEventListener('click', onCancel);
+        confirmBtn.addEventListener('click', onOk);
+    }
+
     async function saveRemote(collection, id, data){
         if(!firebaseDb) return;
         await firebaseDb.collection(collection).doc(id).set({...data, updatedAtServer: firebase.firestore.FieldValue.serverTimestamp()}, {merge:true});
     }
+
     async function loadRemoteState(){
         if(!firebaseDb) return getState();
         const state = getState();
-        const collections = ["students","records","progress","admins","pastorQuestions"];
+        const collections = ["students","records","progress"];
         for(const name of collections){
             const snap = await firebaseDb.collection(name).get();
             if(name === "progress"){
@@ -434,7 +438,7 @@
         {id:7, category:"Esperanza", title:"La Segunda Venida de Jesucristo", summary:"Jesús prometió volver de manera visible, poderosa y gloriosa para llevar a los suyos.", verses:["Juan 14:1-3","Hechos 1:9-11","Mateo 24:30","Apocalipsis 1:7","2 Timoteo 4:8"], bg:"https://images.unsplash.com/photo-1464802686167-b939a6910659?q=80&w=1800", questions:[
             {q:"¿Qué prometió Jesús antes de partir?", verses:["Juan 14:1-3"], note:"Jesús prometió preparar lugar y volver por sus discípulos."},
             {q:"¿Cómo regresará Jesús?", verses:["Hechos 1:9-11"], note:"Volverá de manera real, así como ascendió al cielo."},
-            {q:"¿En qué forma aparecerá el Hijo del Hombre?", verses:["Mateo 24:30"], note:"Vendrá en las nubes con poder y gran gloria."},
+            {q:"¿En qué forma aparecerá el Hijo del Hombre?", verses:["Mateo 24:30"], note:"Vendrá en las nubes con power y gran gloria."},
             {q:"¿Quiénes verán su venida?", verses:["Apocalipsis 1:7"], note:"La venida de Cristo será visible y universal."},
             {q:"¿Qué actitud debe producir esta esperanza?", verses:["2 Timoteo 4:8"], note:"El creyente ama y espera la venida de su Señor."}
         ]},
@@ -516,7 +520,7 @@
             {q:"¿Qué prioridad debe tener Dios en la vida?", verses:["Mateo 6:33"], note:"Buscar primero el reino de Dios ordena todas las áreas de la vida."}
         ]},
         {id:19, category:"Iglesia", title:"El Don de Profecía", summary:"Dios guía a su pueblo por medio del don profético y llama a probar todo por la Biblia.", verses:["Amós 3:7","Apocalipsis 12:17","Apocalipsis 19:10","1 Tesalonicenses 5:19-21","2 Crónicas 20:20"], bg:"https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=1800", questions:[
-            {q:"¿A quién revela Dios sus designios?", verses:["Amós 3:7"], note:"Dios revela sus planes a sus siervos los profetas."},
+            {q:"¿A quién revela Dios sus designios?", verses:["Amós 3:7"], note:"Dios revela sus plans a sus siervos los profetas."},
             {q:"¿Qué rasgo tiene el pueblo fiel de Dios?", verses:["Apocalipsis 12:17"], note:"Guarda los mandamientos de Dios y tiene el testimonio de Jesús."},
             {q:"¿Qué es el testimonio de Jesús?", verses:["Apocalipsis 19:10"], note:"El testimonio de Jesús es el espíritu de la profecía."},
             {q:"¿Cómo debemos tratar las profecías?", verses:["1 Tesalonicenses 5:19-21"], note:"No se deben menospreciar; deben examinarse y retener lo bueno."},
@@ -532,16 +536,14 @@
     ];
 
     function getState(){
-        const fallback = {students:[], records:[], notes:{}, progress:{}, admins:[], pastorQuestions:[]};
+        const fallback = {students:[], records:[], notes:{}, progress:[]};
         try{
             const state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || fallback;
             const normalized = {
                 students: state.students || [],
                 records: state.records || [],
                 notes: state.notes || {},
-                progress: state.progress || {},
-                admins: state.admins || [],
-                pastorQuestions: state.pastorQuestions || []
+                progress: state.progress || {}
             };
             normalized.records.forEach(record => {
                 const key = progressKey(record.studentId, record.beliefId);
@@ -564,16 +566,20 @@
             return normalized;
         }catch(e){return fallback}
     }
+    
     function setState(state){localStorage.setItem(STORAGE_KEY, JSON.stringify(state))}
     function slug(value){return String(value).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}
     function today(){return new Date().toLocaleDateString("es-CO",{year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"})}
     function beliefById(id){return BELIEFS.find(b => b.id === Number(id))}
+    
     function activeStudent(){
         const state = getState();
         return state.students.find(s => s.id === currentStudentId) || state.students[state.students.length - 1] || null;
     }
+    
     function progressKey(studentId, beliefId){return `${studentId}_belief_${beliefId}`}
     function getProgress(state, studentId, beliefId){return state.progress[progressKey(studentId, beliefId)] || null}
+    
     function touchProgress(beliefId, patch){
         const student = activeStudent();
         if(!student) return;
@@ -596,92 +602,55 @@
         setState(state);
         saveRemote("progress", key, state.progress[key]);
     }
+    
     function showLanding(){
         document.getElementById("landing-panel").classList.remove("hidden");
-        document.getElementById("student-registration").classList.add("hidden");
         document.getElementById("modules-panel").classList.add("hidden");
-        document.getElementById("admin-auth-view").classList.add("hidden");
-        document.getElementById("admin-view").classList.add("hidden");
         bgOverlay.style.backgroundImage = "url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1800')";
         window.scrollTo({top:0,behavior:"smooth"});
     }
-    function showStudentRegistration(){
-        document.getElementById("student-registration").classList.remove("hidden");
-        document.getElementById("student-name").focus();
-    }
+    
     async function showModules(){
         document.getElementById("landing-panel").classList.add("hidden");
         document.getElementById("modules-panel").classList.remove("hidden");
         await loadRemoteState();
         renderStudent();
         renderBeliefs();
-        renderStudentQuestions();
         window.scrollTo({top:0,behavior:"smooth"});
     }
 
-    async function saveStudent(event){
-        event.preventDefault();
+    async function freeLogin() {
         const state = getState();
-        const name = document.getElementById("student-name").value.trim();
-        const phone = document.getElementById("student-phone").value.trim();
-        const email = document.getElementById("student-email").value.trim().toLowerCase();
-        const password = document.getElementById("student-password").value;
-        if(!name || !phone || !email || password.length < 6) {
-            alert("Nombre, teléfono, correo y contraseña de mínimo 6 caracteres son obligatorios.");
-            return;
-        }
-        let firebaseUid = "";
-        try{
-            if(firebaseAuth){
-                const credential = await firebaseAuth.createUserWithEmailAndPassword(email, password);
-                firebaseUid = credential.user.uid;
-            }
-        }catch(error){
-            if(error.code === "auth/email-already-in-use" && firebaseAuth){
-                const credential = await firebaseAuth.signInWithEmailAndPassword(email, password);
-                firebaseUid = credential.user.uid;
-            }else{
-                alert(error.message || "No se pudo registrar el estudiante.");
-                return;
-            }
-        }
-        const existing = state.students.find(s => s.id === currentStudentId) || state.students.find(s => s.email === email || s.name.toLowerCase() === name.toLowerCase());
-        const student = {
-            id: firebaseUid || (existing ? existing.id : `${Date.now()}-${slug(name)}`),
-            name,
-            phone,
-            email,
-            role:"student",
-            createdAt: existing ? existing.createdAt : today()
-        };
-        if(existing){
-            state.students = state.students.map(s => s.id === existing.id ? student : s);
-        }else{
+        
+        let student = state.students.find(s => s.id === "default-student");
+        if (!student) {
+            student = {
+                id: "default-student",
+                name: "Estudiante",
+                phone: "No provisto",
+                email: "estudiante@local.com",
+                role: "student",
+                createdAt: today()
+            };
             state.students.push(student);
+            setState(state);
+            await saveRemote("students", student.id, student);
         }
+        
         currentStudentId = student.id;
-        setState(state);
-        await saveRemote("students", student.id, student);
-        renderStudent();
-        showModules();
+        await showModules();
+        showToast("¡Estudio iniciado! Disfruta tu lectura.", "success");
     }
 
     function renderStudent(){
         const student = activeStudent();
-        const summary = document.getElementById("student-summary");
         const studyPill = document.getElementById("study-student-pill");
         if(!student){
-            summary.classList.add("hidden");
             studyPill.innerHTML = "Sin estudiante activo";
             document.getElementById("active-student-name").innerHTML = "Sin estudiante";
             return;
         }
-        document.getElementById("student-name").value = student.name || "";
-        document.getElementById("student-phone").value = student.phone || "";
-        document.getElementById("student-email").value = student.email || "";
-        summary.classList.remove("hidden");
-        summary.innerHTML = `Estudiante activo: ${student.name}`;
-        studyPill.innerHTML = `Estudiando con: ${student.name}`;
+        studyPill.innerHTML = `Estudiante activo`;
         document.getElementById("active-student-name").innerHTML = student.name;
     }
 
@@ -692,6 +661,7 @@
         const student = activeStudent();
         const state = getState();
         const filtered = BELIEFS.filter(b => (!category || b.category === category) && (`${b.id} ${b.title} ${b.summary}`.toLowerCase().includes(query)));
+        
         grid.innerHTML = filtered.map(b => {
             const accepted = student && state.records.some(r => r.studentId === student.id && r.beliefId === b.id && r.accepted);
             const progress = student ? getProgress(state, student.id, b.id) : null;
@@ -711,86 +681,6 @@
         }).join("");
     }
 
-    function sendPastorQuestion(){
-        const student = activeStudent();
-        const textarea = document.getElementById("pastor-question-text");
-        const question = textarea.value.trim();
-        if(!student || !question){
-            alert("Escribe tu pregunta antes de enviarla.");
-            return;
-        }
-        const state = getState();
-        const item = {
-            id:`q-${Date.now()}`,
-            studentId:student.id,
-            studentName:student.name,
-            studentEmail:student.email || "",
-            studentPhone:student.phone || "",
-            question,
-            answer:"",
-            status:"Pendiente",
-            createdAt:today(),
-            answeredAt:""
-        };
-        state.pastorQuestions.push(item);
-        setState(state);
-        saveRemote("pastorQuestions", item.id, item);
-        textarea.value = "";
-        renderStudentQuestions();
-        alert("Tu pregunta fue enviada al pastor.");
-    }
-
-    function renderStudentQuestions(){
-        const container = document.getElementById("student-questions-list");
-        if(!container) return;
-        const student = activeStudent();
-        const state = getState();
-        const items = student ? state.pastorQuestions.filter(q => q.studentId === student.id).slice().reverse() : [];
-        container.innerHTML = items.length ? items.map(q => `
-            <div class="message-item">
-                <strong>${q.createdAt} · ${q.status}</strong>
-                <p>${q.question}</p>
-                ${q.answer ? `<div class="message-answer"><strong>Respuesta del pastor</strong><p>${q.answer}</p></div>` : `<p class="small-muted" style="margin-top:8px;">Esperando respuesta del pastor.</p>`}
-            </div>
-        `).join("") : `<p class="small-muted" style="margin-top:12px;">Todavía no has enviado preguntas.</p>`;
-    }
-
-    function renderAdminQuestions(){
-        const container = document.getElementById("admin-questions-list");
-        if(!container) return;
-        const state = getState();
-        const items = state.pastorQuestions.slice().reverse();
-        container.innerHTML = items.length ? items.map(q => `
-            <div class="message-item">
-                <strong>${q.studentName} · ${q.createdAt} · ${q.status}</strong>
-                <p>${q.question}</p>
-                ${q.answer ? `<div class="message-answer"><strong>Respuesta enviada</strong><p>${q.answer}</p></div>` : ""}
-                <div class="field" style="margin-top:12px;">
-                    <label for="answer-${q.id}">Responder</label>
-                    <textarea id="answer-${q.id}" placeholder="Escribe la respuesta para el estudiante...">${q.answer || ""}</textarea>
-                </div>
-                <button class="btn btn-info" onclick="savePastorAnswer('${q.id}')">Enviar respuesta</button>
-            </div>
-        `).join("") : `<p class="small-muted">Todavía no hay preguntas de estudiantes.</p>`;
-    }
-
-    function savePastorAnswer(questionId){
-        const textarea = document.getElementById(`answer-${questionId}`);
-        const answer = textarea.value.trim();
-        if(!answer){
-            alert("Escribe una respuesta antes de enviarla.");
-            return;
-        }
-        const state = getState();
-        const index = state.pastorQuestions.findIndex(q => q.id === questionId);
-        if(index < 0) return;
-        state.pastorQuestions[index] = {...state.pastorQuestions[index], answer, status:"Respondida", answeredAt:today()};
-        setState(state);
-        saveRemote("pastorQuestions", questionId, state.pastorQuestions[index]);
-        renderAdminQuestions();
-        alert("Respuesta enviada al estudiante.");
-    }
-
     function buildStudy(belief){
         const questions = belief.questions || [];
         return {
@@ -801,7 +691,7 @@
                 q:item.q,
                 bg:index === 0 ? belief.bg : "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1800",
                 verses:item.verses.map(ref => ({ref, txt:"Lee este pasaje y escribe qué afirma acerca de la creencia estudiada."})),
-                theology:{author:"La Fe de Jesús", txt:item.note}
+                theology:{author:"Conoce la Biblia", txt:item.note}
             })),
             finalDecision:`Después de haber leído y entendido la lección “${belief.title}”, deseo aceptar esta enseñanza bíblica y vivirla con la ayuda de Dios.`,
             finalPrompt:"¿Aceptas esta lección y deseas avanzar a la siguiente?"
@@ -811,14 +701,12 @@
     function openStudy(id){
         const student = activeStudent();
         if(!student){
-            document.getElementById("student-name").focus();
-            alert("Primero registra el nombre del estudiante para poder guardar su avance.");
+            showToast("Primero ingresa a la plataforma.", "error");
             return;
         }
         currentStudyKey = Number(id);
         currentStepIndex = 0;
         document.getElementById("home-view").classList.add("hidden");
-        document.getElementById("admin-view").classList.add("hidden");
         document.getElementById("study-view").classList.remove("hidden");
         touchProgress(currentStudyKey, {status:"En estudio", currentStep:1});
         renderStudent();
@@ -874,17 +762,17 @@
                     <label><input id="accept-belief" type="checkbox" ${existing && existing.accepted ? "checked" : ""}> ${study.finalPrompt}</label>
                 </div>
                 <div class="field">
-                    <label for="decision-note">Observación del instructor</label>
-                    <textarea id="decision-note" placeholder="Ej. Aceptó con alegría, necesita repasar textos, desea bautismo..." oninput="saveDecision(false)">${existing ? existing.note || "" : ""}</textarea>
+                    <label for="decision-note">Observación o nota personal</label>
+                    <textarea id="decision-note" placeholder="Ej. Acepté con alegría, deseo guardar y aplicar este mensaje..." oninput="saveDecision(false)">${existing ? existing.note || "" : ""}</textarea>
                 </div>
                 <button class="btn btn-primary" onclick="saveDecision(true)">Guardar decisión</button>
-                <button class="btn btn-info" onclick="downloadStudyNotes()" style="margin-top:10px;">Descargar notas del estudiante</button>
+                <button class="btn btn-info" onclick="downloadStudyNotes()" style="margin-top:10px;">Descargar notas de estudio</button>
                 <div class="nav-buttons">
                     <button class="btn btn-secondary" onclick="prevStep()">Revisar respuestas</button>
                     <button class="btn btn-danger" onclick="clearStudyAndReset()">Borrar respuestas de esta creencia</button>
                 </div>
             </div>
-            <div class="signature">Desarrollado para el ministerio del Pr. Bladimir Alvarado</div>
+            <div class="signature">Conoce la Biblia • Diseñado por Bladimir Alvarado</div>
         </div>`;
         container.innerHTML = html;
     }
@@ -897,6 +785,7 @@
         const belief = beliefById(currentStudyKey);
         bgOverlay.style.backgroundImage = `url('${newBg || belief.bg}')`;
     }
+    
     function nextStep(){
         const steps = document.querySelectorAll("#dynamic-steps-container .step");
         if(currentStepIndex < steps.length - 1){
@@ -912,6 +801,7 @@
             window.scrollTo({top:0,behavior:"smooth"});
         }
     }
+    
     function prevStep(){
         const steps = document.querySelectorAll("#dynamic-steps-container .step");
         if(currentStepIndex > 0){
@@ -923,10 +813,12 @@
             window.scrollTo({top:0,behavior:"smooth"});
         }
     }
+    
     function answerKey(stepNum){
         const student = activeStudent();
         return `${student.id}_belief_${currentStudyKey}_ans_${stepNum}`;
     }
+    
     function saveIndividualAnswer(stepNum){
         const state = getState();
         const study = buildStudy(beliefById(currentStudyKey));
@@ -934,6 +826,7 @@
         setState(state);
         touchProgress(currentStudyKey, {status:"En estudio", currentStep:stepNum});
     }
+    
     function loadSavedAnswers(id){
         const state = getState();
         const study = buildStudy(beliefById(id));
@@ -944,6 +837,7 @@
             if(textarea && saved) textarea.value = saved;
         });
     }
+    
     function saveDecision(showMessage){
         const student = activeStudent();
         const belief = beliefById(currentStudyKey);
@@ -952,241 +846,63 @@
         const state = getState();
         const record = {studentId:student.id, studentName:student.name, phone:student.phone, beliefId:belief.id, beliefTitle:belief.title, accepted, note, updatedAt:today()};
         const index = state.records.findIndex(r => r.studentId === student.id && r.beliefId === belief.id);
+        
         if(index >= 0) state.records[index] = record; else state.records.push(record);
         setState(state);
         saveRemote("records", `${student.id}_lesson_${belief.id}`, record);
         touchProgress(currentStudyKey, {status: accepted ? "Aceptada" : "Terminada", completed:true, accepted});
-        if(showMessage) alert("Decisión guardada correctamente.");
+        
+        if(showMessage) {
+            showToast("Decisión guardada correctamente.", "success");
+        }
     }
+    
     function clearStudyAndReset(){
-        if(!confirm("¿Deseas borrar las respuestas de esta creencia para el estudiante activo?")) return;
-        const state = getState();
-        const study = buildStudy(beliefById(currentStudyKey));
-        study.questions.forEach((_,index) => delete state.notes[answerKey(index + 1)]);
-        setState(state);
-        openStudy(currentStudyKey);
+        customConfirm(
+            "Borrar respuestas", 
+            "¿Deseas borrar definitivamente todas las respuestas de esta creencia? Esta acción no se puede deshacer.",
+            () => {
+                const state = getState();
+                const study = buildStudy(beliefById(currentStudyKey));
+                study.questions.forEach((_,index) => delete state.notes[answerKey(index + 1)]);
+                setState(state);
+                openStudy(currentStudyKey);
+                showToast("Respuestas eliminadas.", "info");
+            }
+        );
     }
+    
     function downloadStudyNotes(){
         const student = activeStudent();
         const belief = beliefById(currentStudyKey);
         const study = buildStudy(belief);
         const state = getState();
-        let content = `NOTAS DE ESTUDIO BIBLICO\nEstudiante: ${student.name}\nCreencia ${belief.id}: ${belief.title}\nInstructor: Pr. Bladimir Alvarado\n========================================\n\n`;
+        let content = `NOTAS DE ESTUDIO BÍBLICO\nEstudiante: ${student.name}\nCreencia ${belief.id}: ${belief.title}\nDiseñado por Bladimir Alvarado\n========================================\n\n`;
+        
         study.questions.forEach((item,index) => {
             const stepNum = index + 1;
             content += `Pregunta ${stepNum}: ${item.q}\n`;
             content += `Respuesta:\n${state.notes[answerKey(stepNum)] || "Sin respuesta escrita."}\n\n`;
         });
+        
         const record = state.records.find(r => r.studentId === student.id && r.beliefId === belief.id);
-        content += `Decision: ${record && record.accepted ? "Acepto la leccion" : "Pendiente o no marcada"}\nObservacion: ${record ? record.note || "Sin observacion." : "Sin registro."}\n`;
+        content += `Decisión: ${record && record.accepted ? "Aceptó la lección" : "Pendiente o no marcada"}\nObservación: ${record ? record.note || "Sin observación." : "Sin registro."}\n`;
         downloadFile(`Notas_${slug(student.name)}_leccion_${belief.id}.txt`, content, "text/plain;charset=utf-8");
+        showToast("Descargando archivo de notas de estudio...", "success");
     }
-    function showAdmin(){
-        const state = getState();
-        document.getElementById("home-view").classList.add("hidden");
-        document.getElementById("study-view").classList.add("hidden");
-        document.getElementById("admin-view").classList.add("hidden");
-        document.getElementById("admin-auth-view").classList.remove("hidden");
-        const hasAdmin = state.admins.length > 0;
-        document.getElementById("admin-auth-title").innerHTML = hasAdmin ? "Ingresar como admin" : "Registro de admin";
-        document.getElementById("admin-auth-submit").innerHTML = hasAdmin ? "Entrar al panel" : "Crear admin";
-        document.getElementById("admin-name-field").classList.toggle("hidden", hasAdmin);
-        document.getElementById("admin-name").required = !hasAdmin;
-        document.getElementById("admin-auth-help").innerHTML = hasAdmin ? "Ingresa con el correo y contraseña del administrador registrado." : "Este primer registro crea el administrador local. Al subir a Firebase, estos campos pueden conectarse a Firebase Authentication.";
-        window.scrollTo({top:0,behavior:"smooth"});
-    }
-    function exitAdminAuth(){
-        document.getElementById("admin-auth-view").classList.add("hidden");
-        document.getElementById("home-view").classList.remove("hidden");
-        showLanding();
-    }
-    async function handleAdminAuth(event){
-        event.preventDefault();
-        const state = getState();
-        const email = document.getElementById("admin-email").value.trim().toLowerCase();
-        const password = document.getElementById("admin-password").value;
-        if(password.length < 6){
-            alert("La contraseña debe tener mínimo 6 caracteres.");
-            return;
-        }
-        if(state.admins.length === 0){
-            const name = document.getElementById("admin-name").value.trim();
-            if(!name){
-                alert("Escribe el nombre del administrador.");
-                return;
-            }
-            let adminId = `admin-${Date.now()}`;
-            try{
-                if(firebaseAuth){
-                    const credential = await firebaseAuth.createUserWithEmailAndPassword(email, password);
-                    adminId = credential.user.uid;
-                }
-            }catch(error){
-                alert(error.message || "No se pudo crear el administrador.");
-                return;
-            }
-            const adminData = {id:adminId, name, email, role:"admin", createdAt:today()};
-            state.admins.push({...adminData, password});
-            setState(state);
-            await saveRemote("admins", adminId, adminData);
-            adminSession = true;
-            openAdminPanel();
-            return;
-        }
-        let admin = state.admins.find(item => item.email === email && item.password === password);
-        if(!admin && email === DEFAULT_ADMIN.email && password === DEFAULT_ADMIN.password){
-            admin = {id:"default-admin", ...DEFAULT_ADMIN, role:"admin", createdAt:today()};
-            if(!state.admins.some(item => item.email === DEFAULT_ADMIN.email)){
-                state.admins.push(admin);
-                setState(state);
-            }
-        }
-        if(firebaseAuth){
-            try{
-                const credential = await firebaseAuth.signInWithEmailAndPassword(email, password);
-                admin = state.admins.find(item => item.id === credential.user.uid || item.email === email);
-            }catch(error){
-                if(!(email === DEFAULT_ADMIN.email && password === DEFAULT_ADMIN.password)){
-                    alert(error.message || "Correo o contraseña de administrador incorrectos.");
-                    return;
-                }
-            }
-        }
-        if(!admin){
-            alert("Correo o contraseña de administrador incorrectos.");
-            return;
-        }
-        adminSession = true;
-        openAdminPanel();
-    }
-    async function openAdminPanel(){
-        if(!adminSession){
-            showAdmin();
-            return;
-        }
-        await loadRemoteState();
-        document.getElementById("home-view").classList.add("hidden");
-        document.getElementById("admin-auth-view").classList.add("hidden");
-        document.getElementById("study-view").classList.add("hidden");
-        document.getElementById("admin-view").classList.remove("hidden");
-        renderAdminOptions();
-        renderAdmin();
-        renderAdminQuestions();
-        window.scrollTo({top:0,behavior:"smooth"});
-    }
-    function exitAdmin(){
-        adminSession = false;
-        document.getElementById("admin-view").classList.add("hidden");
-        document.getElementById("home-view").classList.remove("hidden");
-        showLanding();
-    }
+    
     async function logoutUser(){
-        adminSession = false;
         currentStudentId = "";
         if(firebaseAuth){
             try{ await firebaseAuth.signOut(); }catch(e){}
         }
+        
         document.getElementById("home-view").classList.remove("hidden");
         document.getElementById("study-view").classList.add("hidden");
-        document.getElementById("admin-auth-view").classList.add("hidden");
-        document.getElementById("admin-view").classList.add("hidden");
         showLanding();
+        showToast("Se cerró la sesión correctamente.", "info");
     }
-    function renderAdminOptions(){
-        const select = document.getElementById("admin-belief-filter");
-        select.innerHTML = `<option value="">Todas las lecciones</option>` + BELIEFS.map(b => `<option value="${b.id}">${b.id}. ${b.title}</option>`).join("");
-    }
-    function renderAdmin(){
-        const state = getState();
-        const query = document.getElementById("admin-search").value.toLowerCase();
-        const beliefFilter = document.getElementById("admin-belief-filter").value;
-        const accepted = state.records.filter(r => r.accepted);
-        const progressList = Object.values(state.progress || {});
-        const completed = progressList.filter(p => p.completed);
-        const uniqueAcceptedPeople = new Set(accepted.map(r => r.studentId)).size;
-        document.getElementById("stats-grid").innerHTML = `
-            <div class="stat"><strong>${state.students.length}</strong><span>Estudiantes registrados</span></div>
-            <div class="stat"><strong>${progressList.length}</strong><span>Lecciones tomadas</span></div>
-            <div class="stat"><strong>${completed.length}</strong><span>Lecciones terminadas</span></div>
-            <div class="stat"><strong>${accepted.length}</strong><span>Lecciones aceptadas</span></div>`;
-        const studentRows = state.students
-            .map(student => {
-                const studentProgress = progressList.filter(p => p.studentId === student.id);
-                const studentRecords = state.records.filter(r => r.studentId === student.id && r.accepted);
-                const current = studentProgress.slice().sort((a,b) => String(b.lastActivity || "").localeCompare(String(a.lastActivity || "")))[0];
-                return {student, studentProgress, studentRecords, current};
-            })
-            .filter(row => {
-                const text = `${row.student.name} ${row.student.phone || ""} ${row.current ? row.current.beliefTitle : ""}`.toLowerCase();
-                return !query || text.includes(query);
-            });
-        document.getElementById("students-list").innerHTML = studentRows.length ? studentRows.map(row => {
-            const questions = state.pastorQuestions.filter(q => q.studentId === row.student.id);
-            const lessons = row.studentProgress.slice().sort((a,b) => a.beliefId - b.beliefId);
-            return `
-            <details class="student-card">
-                <summary>
-                    <div><strong>${row.student.name}</strong><span>${row.student.phone || "Sin contacto"} ${row.student.email ? "· " + row.student.email : ""}</span></div>
-                    <div><strong>${row.current ? row.current.beliefId + ". " + row.current.beliefTitle : "Sin lección"}</strong><span>Lección actual</span></div>
-                    <div><strong>${row.studentProgress.length}</strong><span>Tomadas</span></div>
-                    <div><strong>${row.studentProgress.filter(p => p.completed).length}</strong><span>Terminadas</span></div>
-                    <div><strong>${questions.length}</strong><span>Preguntas</span></div>
-                </summary>
-                <div class="student-card-body">
-                    <div class="mini-grid">
-                        <div class="mini-box"><strong>Aceptadas</strong>${row.studentRecords.length}</div>
-                        <div class="mini-box"><strong>Última actividad</strong>${row.current ? row.current.lastActivity || row.current.openedAt : row.student.createdAt}</div>
-                        <div class="mini-box"><strong>Estado</strong>${row.current ? row.current.status : "Inscrito"}</div>
-                    </div>
-                    <div>
-                        <strong style="color:var(--gold);">Lecciones</strong>
-                        ${lessons.length ? lessons.map(p => `<div class="small-muted">${p.beliefId}. ${p.beliefTitle} · ${p.status} · Paso ${p.currentStep || 1}/${p.totalSteps || "-"}</div>`).join("") : `<p class="small-muted">Aún no ha iniciado lecciones.</p>`}
-                    </div>
-                    <div>
-                        <strong style="color:var(--gold);">Preguntas al pastor</strong>
-                        ${questions.length ? questions.map(q => `<div class="message-item"><strong>${q.createdAt} · ${q.status}</strong><p>${q.question}</p>${q.answer ? `<div class="message-answer"><strong>Respuesta</strong><p>${q.answer}</p></div>` : ""}</div>`).join("") : `<p class="small-muted">Sin preguntas enviadas.</p>`}
-                    </div>
-                </div>
-            </details>`;
-        }).join("") : `<p class="small-muted">Todavía no hay estudiantes inscritos para mostrar.</p>`;
-
-        const progressRows = progressList
-            .filter(p => (!beliefFilter || String(p.beliefId) === beliefFilter) && (`${p.studentName} ${p.beliefTitle} ${p.status}`.toLowerCase().includes(query)))
-            .sort((a,b) => a.studentName.localeCompare(b.studentName) || a.beliefId - b.beliefId);
-        document.getElementById("records-table").innerHTML = progressRows.length ? progressRows.map(p => {
-            const student = state.students.find(s => s.id === p.studentId) || {};
-            const record = state.records.find(r => r.studentId === p.studentId && r.beliefId === p.beliefId);
-            return `
-            <tr>
-                <td>${p.studentName}</td>
-                <td>${student.phone || "Sin contacto"}</td>
-                <td>${p.beliefId}. ${p.beliefTitle}</td>
-                <td>${record && record.accepted ? "Aceptó" : p.status}</td>
-                <td>${p.lastActivity || p.openedAt}</td>
-                <td>${record && record.note ? record.note : `Paso ${p.currentStep || 1} de ${p.totalSteps || "-"}`}</td>
-            </tr>`;
-        }).join("") : `<tr><td colspan="6">Todavía no hay lecciones tomadas para mostrar.</td></tr>`;
-    }
-    function exportAllRecords(){
-        const state = getState();
-        const header = ["Persona","Telefono","Leccion","Estado","Acepto","Fecha","Observacion"];
-        const lines = [header.join(",")];
-        Object.values(state.progress || {}).forEach(p => {
-            const student = state.students.find(s => s.id === p.studentId) || {};
-            const record = state.records.find(r => r.studentId === p.studentId && r.beliefId === p.beliefId);
-            lines.push([
-                p.studentName,
-                student.phone || "",
-                `${p.beliefId}. ${p.beliefTitle}`,
-                record && record.accepted ? "Aceptada" : p.status,
-                record && record.accepted ? "Si" : "No",
-                p.lastActivity || p.openedAt || "",
-                record && record.note ? record.note : ""
-            ].map(csv).join(","));
-        });
-        downloadFile("registros_la_fe_de_jesus.csv", lines.join("\n"), "text/csv;charset=utf-8");
-    }
-    function csv(value){return `"${String(value).replaceAll('"','""')}"`}
+    
     function downloadFile(name, content, type){
         const blob = new Blob([content], {type});
         const link = document.createElement("a");
@@ -1195,14 +911,7 @@
         link.click();
         URL.revokeObjectURL(link.href);
     }
-    function clearAllRecords(){
-        if(confirm("Esto borrará estudiantes, respuestas y decisiones guardadas en este navegador. ¿Continuar?")){
-            localStorage.removeItem(STORAGE_KEY);
-            currentStudentId = "";
-            renderStudent();
-            renderAdmin();
-        }
-    }
+    
     function init(){
         const state = getState();
         currentStudentId = state.students.length ? state.students[state.students.length - 1].id : "";
