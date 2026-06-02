@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Fe de Jesús | Plataforma de Estudio Bíblico</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Libre+Baskerville:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{
+            --bg:#061018;
+            --panel:rgba(12,23,36,.92);
+            --panel-soft:rgba(255,255,255,.06);
+            --line:rgba(255,255,255,.13);
+            --gold:#ffd166;
+            --sky:#56c7ff;
+            --mint:#76e4b3;
+            --rose:#ff8fab;
+            --text:#f8fafc;
+            --muted:#a8b3c2;
+        }
+        body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+        button,input,textarea,select{font-family:inherit}
+        .bg-overlay{
+            position:fixed;inset:0;z-index:-2;background-size:cover;background-position:center;
+            filter:brightness(.25) saturate(.95);transition:background-image .7s ease;
+            background-image:url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1800');
+        }
+        .page-shade{position:fixed;inset:0;z-index:-1;background:linear-gradient(120deg,rgba(2,6,23,.9),rgba(3,7,18,.62) 48%,rgba(0,0,0,.76));}
+        .app-shell{width:min(1180px,calc(100% - 36px));margin:0 auto;padding:32px 0 42px;}
+        .topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:24px;}
+        .brand-kicker{color:var(--gold);text-transform:uppercase;letter-spacing:2.5px;font-weight:700;font-size:.75rem;margin-bottom:5px;}
+        .brand-title{font-size:clamp(1.8rem,4vw,3.2rem);line-height:1.08;color:#fff;}
+        .brand-subtitle{font-family:'Libre Baskerville',serif;color:#d8dee9;font-size:1.08rem;margin-top:8px;}
+        .top-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;}
+        .btn{border:0;border-radius:999px;padding:13px 18px;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:.7px;transition:.2s ease;white-space:nowrap;}
+        .btn-primary{background:var(--gold);color:#08111d;}
+        .btn-secondary{background:rgba(255,255,255,.1);color:#fff;border:1px solid var(--line);}
+        .btn-info{background:var(--sky);color:#061018;}
+        .btn-danger{background:rgba(255,143,171,.16);color:#ffd1dc;border:1px solid rgba(255,143,171,.32);}
+        .btn:hover{transform:translateY(-1px);filter:brightness(1.08)}
+        .btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+        .hidden{display:none!important}
+        .intro-layout{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:22px;align-items:start;}
+        .hero-panel,.form-panel,.card,.admin-panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;backdrop-filter:blur(12px);}
+        .hero-panel{padding:30px;}
+        .hero-panel p{color:var(--muted);line-height:1.65;max-width:760px;margin:14px 0 0;}
+        .method-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:24px;}
+        .method-item{background:var(--panel-soft);border:1px solid var(--line);border-radius:8px;padding:16px;min-height:118px;}
+        .method-item strong{display:block;color:var(--gold);margin-bottom:8px;}
+        .method-item span{color:#cbd5e1;font-size:.9rem;line-height:1.45;}
+        .form-panel{padding:24px;position:sticky;top:24px;}
+        .form-panel h2,.admin-panel h2{font-size:1.25rem;margin-bottom:14px;}
+        .field{margin-bottom:14px;}
+        .field label{display:block;color:var(--gold);font-size:.78rem;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:7px;}
+        .field input,.field textarea,.field select{width:100%;background:rgba(0,0,0,.32);color:#fff;border:1px solid var(--line);border-radius:8px;padding:12px 13px;outline:none;}
+        .field textarea{min-height:86px;resize:vertical}
+        .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(255,209,102,.12);}
+        .student-pill{display:flex;align-items:center;gap:10px;background:rgba(118,228,179,.1);border:1px solid rgba(118,228,179,.25);border-radius:999px;padding:10px 14px;color:#d8ffec;font-weight:600;}
+        .section-head{display:flex;justify-content:space-between;align-items:end;gap:16px;margin:28px 0 16px;}
+        .section-head h2{font-size:1.45rem;}
+        .section-head p{color:var(--muted);font-size:.95rem;margin-top:4px;}
+        .filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+        .filters input,.filters select{background:rgba(0,0,0,.3);color:#fff;border:1px solid var(--line);border-radius:999px;padding:11px 14px;outline:none;min-width:210px;}
+        .beliefs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:15px;}
+        .belief-card{background:rgba(12,23,36,.88);border:1px solid var(--line);border-radius:8px;padding:18px;display:flex;flex-direction:column;min-height:238px;transition:.2s ease;}
+        .belief-card:hover{transform:translateY(-3px);border-color:rgba(255,209,102,.65);background:rgba(12,23,36,.96);}
+        .belief-card.locked{opacity:.62}
+        .belief-card.locked:hover{transform:none;border-color:var(--line)}
+        .belief-meta{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:12px;}
+        .belief-num{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:rgba(255,209,102,.13);color:var(--gold);font-weight:800;}
+        .category{font-size:.72rem;letter-spacing:1px;text-transform:uppercase;color:#d7ecff;background:rgba(86,199,255,.12);border:1px solid rgba(86,199,255,.25);padding:5px 8px;border-radius:999px;}
+        .belief-card h3{font-size:1.08rem;line-height:1.28;margin-bottom:9px;}
+        .belief-card p{color:#c5cedb;line-height:1.52;font-size:.9rem;flex:1;}
+        .status-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:16px;flex-wrap:wrap;}
+        .belief-card .btn{font-size:.78rem;line-height:1.15;max-width:170px;min-width:0;white-space:normal;padding:12px 14px;}
+        .status{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);}
+        .status.accepted{color:var(--mint)}
+        .study-view{max-width:930px;margin:0 auto;}
+        .study-header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:18px;}
+        .progress{height:8px;background:rgba(255,255,255,.11);border-radius:999px;overflow:hidden;margin-bottom:20px;}
+        .progress-bar{height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--mint));transition:width .3s;}
+        .step{display:none;animation:fadeIn .35s ease both;}
+        .step.active{display:block}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+        .card{padding:32px;}
+        .tag{color:var(--gold);text-transform:uppercase;letter-spacing:2.4px;font-weight:700;font-size:.76rem;margin-bottom:10px;}
+        .question{font-size:clamp(1.45rem,3vw,2.15rem);line-height:1.25;margin-bottom:20px;}
+        .verses-grid{display:grid;gap:10px;margin:18px 0 22px;}
+        .verse-item{background:rgba(255,255,255,.06);border-left:3px solid var(--gold);border-radius:8px;padding:14px;color:#e8eef7;font-size:.92rem;line-height:1.55;}
+        .verse-item strong{display:block;color:var(--gold);margin-bottom:4px;}
+        .theology-box{background:rgba(86,199,255,.09);border:1px solid rgba(86,199,255,.24);border-radius:8px;padding:18px;margin-top:18px;}
+        .theology-box h4{color:var(--sky);font-size:.9rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;}
+        .theology-box p{color:#e2e8f0;line-height:1.6;font-size:.92rem;}
+        .nav-buttons{display:flex;gap:12px;margin-top:20px;}
+        .nav-buttons .btn{flex:1}
+        .decision-box{background:rgba(118,228,179,.1);border:1px solid rgba(118,228,179,.26);border-radius:8px;padding:20px;margin:20px 0;text-align:left;}
+        .decision-box label{display:flex;align-items:flex-start;gap:12px;color:#effff7;font-weight:600;line-height:1.5;cursor:pointer;}
+        .decision-box input{width:20px;height:20px;margin-top:2px;accent-color:var(--gold);flex:0 0 auto;}
+        .admin-panel{padding:24px;margin-top:18px;}
+        .message-panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:22px;margin:24px 0;}
+        .message-item{background:var(--panel-soft);border:1px solid var(--line);border-radius:8px;padding:14px;margin-top:12px;}
+        .message-item strong{color:var(--gold);display:block;margin-bottom:6px;}
+        .message-answer{border-left:3px solid var(--mint);padding-left:12px;margin-top:10px;color:#d8ffec;}
+        .admin-auth-panel{max-width:520px;margin:0 auto;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:26px;}
+        .portal-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px;}
+        .admin-entry{background:rgba(86,199,255,.09);border:1px solid rgba(86,199,255,.24);border-radius:8px;padding:20px;margin-top:22px;}
+        .student-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;background:rgba(118,228,179,.1);border:1px solid rgba(118,228,179,.24);border-radius:8px;padding:16px;margin:20px 0;}
+        .student-toolbar strong{color:var(--mint)}
+        .stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:16px 0 18px;}
+        .stat{background:var(--panel-soft);border:1px solid var(--line);border-radius:8px;padding:14px;}
+        .stat strong{font-size:1.55rem;color:var(--gold);display:block;}
+        .stat span{font-size:.82rem;color:var(--muted);}
+        .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:8px;}
+        table{width:100%;border-collapse:collapse;min-width:760px;background:rgba(0,0,0,.2);}
+        th,td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;font-size:.88rem;vertical-align:top;}
+        th{color:var(--gold);font-size:.75rem;text-transform:uppercase;letter-spacing:1px;background:rgba(255,255,255,.05);}
+        td{color:#e2e8f0}
+        .small-muted{color:var(--muted);font-size:.86rem;line-height:1.45;}
+        .signature{text-align:center;color:rgba(255,255,255,.48);font-size:.78rem;letter-spacing:1px;margin-top:26px;}
+        @media(max-width:900px){
+            .intro-layout{grid-template-columns:1fr}
+            .form-panel{position:static}
+            .method-grid,.stats-grid{grid-template-columns:1fr 1fr}
+            .topbar,.section-head,.study-header{align-items:flex-start;flex-direction:column}
+            .top-actions{justify-content:flex-start}
+        }
+        @media(max-width:640px){
+            .app-shell{width:min(100% - 24px,1180px);padding-top:20px}
+            .method-grid,.stats-grid{grid-template-columns:1fr}
+            .filters input,.filters select{min-width:100%;width:100%}
+            .card,.hero-panel,.form-panel,.admin-panel{padding:20px}
+            .nav-buttons{flex-direction:column-reverse}
+            .btn{width:100%}
+            .belief-card .btn{max-width:none;width:auto}
+            .portal-actions,.student-toolbar{grid-template-columns:1fr;display:grid}
+        }
+    </style>
+</head>
+<body>
+<div class="bg-overlay" id="bg-overlay"></div>
+<div class="page-shade"></div>
+
+<main class="app-shell">
+    <section id="home-view">
+        <div class="topbar">
+            <div>
+                <div class="brand-kicker">Estudiemos juntos la Biblia</div>
+                <h1 class="brand-title">La Fe de Jesús</h1>
+                <div class="brand-subtitle">20 lecciones bíblicas interactivas | Pr. Bladimir Alvarado</div>
+            </div>
+        </div>
+
+        <div class="intro-layout" id="landing-panel">
+            <div class="hero-panel">
+                <h2>Bienvenido a la plataforma de estudio bíblico.</h2>
+                <p>Selecciona tu rol para entrar al espacio correcto. El estudiante solo verá su registro y las lecciones bíblicas; el administrador tendrá un panel privado para consultar estudiantes, avance y decisiones.</p>
+                <div class="method-grid">
+                    <div class="method-item"><strong>1. Registro</strong><span>Se guarda el nombre y la información básica del estudiante.</span></div>
+                    <div class="method-item"><strong>2. Estudio</strong><span>La persona avanza por las lecciones y deja sus respuestas.</span></div>
+                    <div class="method-item"><strong>3. Seguimiento</strong><span>El administrador revisa lecciones iniciadas, terminadas y aceptadas.</span></div>
+                </div>
+                <div class="admin-entry">
+                    <h2>Entrar a la plataforma</h2>
+                    <p>Elige el rol que corresponde antes de continuar.</p>
+                    <div class="portal-actions">
+                        <button class="btn btn-primary" onclick="showStudentRegistration()">Soy estudiante</button>
+                        <button class="btn btn-info" onclick="showAdmin()">Soy admin</button>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="form-panel hidden" id="student-registration">
+                <h2>Registro del estudiante</h2>
+                <div id="student-summary" class="student-pill hidden"></div>
+                <form id="student-form" onsubmit="saveStudent(event)">
+                    <div class="field">
+                        <label for="student-name">Nombre completo</label>
+                        <input id="student-name" required autocomplete="name" placeholder="Ej. María González">
+                    </div>
+                    <div class="field">
+                        <label for="student-phone">Teléfono o WhatsApp</label>
+                        <input id="student-phone" required autocomplete="tel" inputmode="tel" placeholder="Ej. 300 000 0000">
+                    </div>
+                    <div class="field">
+                        <label for="student-email">Correo</label>
+                        <input id="student-email" required autocomplete="email" type="email" placeholder="estudiante@correo.com">
+                    </div>
+                    <div class="field">
+                        <label for="student-password">Contraseña</label>
+                        <input id="student-password" required autocomplete="new-password" type="password" minlength="6" placeholder="Mínimo 6 caracteres">
+                    </div>
+                    <button class="btn btn-primary" type="submit">Registrarme y entrar</button>
+                </form>
+                <p class="small-muted" style="margin-top:12px;">Los datos se guardan localmente en este navegador. Para llevarlos a otro equipo, usa la opción exportar registros.</p>
+            </aside>
+        </div>
+
+        <div id="modules-panel" class="hidden">
+            <div class="student-toolbar">
+                <div>
+                    <div class="small-muted">Estudiante activo</div>
+                    <strong id="active-student-name">Sin estudiante</strong>
+                </div>
+                <div class="top-actions">
+                    <button class="btn btn-secondary" onclick="showLanding()">Registrar otro estudiante</button>
+                    <button class="btn btn-danger" onclick="logoutUser()">Cerrar sesión</button>
+                </div>
+            </div>
+            <div class="message-panel">
+                <h2>Pregúntale al pastor</h2>
+                <p class="small-muted">Escribe tu pregunta. El pastor podrá responder desde el panel de admin.</p>
+                <div class="field" style="margin-top:14px;">
+                    <label for="pastor-question-text">Tu pregunta</label>
+                    <textarea id="pastor-question-text" placeholder="Escribe aquí tu pregunta bíblica o pastoral..."></textarea>
+                </div>
+                <button class="btn btn-info" onclick="sendPastorQuestion()">Enviar pregunta</button>
+                <div id="student-questions-list"></div>
+            </div>
+            <div class="section-head">
+                <div>
+                    <h2>Lecciones de estudio</h2>
+                    <p>Avanza una lección a la vez. Para abrir la siguiente, primero debes completar la anterior.</p>
+                </div>
+                <div class="filters">
+                    <input id="search-beliefs" oninput="renderBeliefs()" placeholder="Buscar lección...">
+                    <select id="category-filter" onchange="renderBeliefs()">
+                        <option value="">Todas las áreas</option>
+                        <option value="Fundamentos">Fundamentos</option>
+                        <option value="Comunión">Comunión</option>
+                        <option value="Salvación">Salvación</option>
+                        <option value="Esperanza">Esperanza</option>
+                        <option value="Obediencia">Obediencia</option>
+                        <option value="Iglesia">Iglesia</option>
+                        <option value="Mayordomía">Mayordomía</option>
+                        <option value="Decisión">Decisión</option>
+                        <option value="Vida cristiana">Vida cristiana</option>
+                    </select>
+                </div>
+            </div>
+            <div class="beliefs-grid" id="beliefs-grid"></div>
+            <div class="signature">Basado en la serie bíblica La Fe de Jesús • Diseñado para estudio progresivo</div>
+        </div>
+    </section>
+
+    <section id="study-view" class="study-view hidden">
+        <div class="study-header">
+            <button class="btn btn-secondary" onclick="exitToHome()">Volver al inicio</button>
+            <div id="study-student-pill" class="student-pill"></div>
+        </div>
+        <div class="progress"><div class="progress-bar" id="bar"></div></div>
+        <div id="dynamic-steps-container"></div>
+    </section>
+
+    <section id="admin-auth-view" class="hidden">
+        <div class="topbar">
+            <div>
+                <div class="brand-kicker">Acceso administrativo</div>
+                <h1 class="brand-title">Panel privado</h1>
+                <div class="brand-subtitle">Registra o ingresa como administrador antes de ver la información.</div>
+            </div>
+            <button class="btn btn-secondary" onclick="exitAdminAuth()">Volver</button>
+        </div>
+        <div class="admin-auth-panel">
+            <h2 id="admin-auth-title">Registro de admin</h2>
+            <form id="admin-auth-form" onsubmit="handleAdminAuth(event)">
+                <div class="field" id="admin-name-field">
+                    <label for="admin-name">Nombre del admin</label>
+                    <input id="admin-name" autocomplete="name" placeholder="Ej. Pr. Bladimir Alvarado">
+                </div>
+                <div class="field">
+                    <label for="admin-email">Correo</label>
+                    <input id="admin-email" required autocomplete="email" type="email" placeholder="admin@iglesia.org">
+                </div>
+                <div class="field">
+                    <label for="admin-password">Contraseña</label>
+                    <input id="admin-password" required autocomplete="current-password" type="password" minlength="6" placeholder="Mínimo 6 caracteres">
+                </div>
+                <button class="btn btn-info" type="submit" id="admin-auth-submit">Crear admin</button>
+            </form>
+            <p class="small-muted" id="admin-auth-help" style="margin-top:12px;">Este primer registro crea el administrador local. Al subir a Firebase, estos campos pueden conectarse a Firebase Authentication.</p>
+        </div>
+    </section>
+
+    <section id="admin-view" class="hidden">
+        <div class="topbar">
+            <div>
+                <div class="brand-kicker">Seguimiento pastoral</div>
+                <h1 class="brand-title">Panel de registro</h1>
+                <div class="brand-subtitle">Consulta por estudiante, lección, avance y decisiones.</div>
+            </div>
+            <div class="top-actions">
+                <button class="btn btn-secondary" onclick="exitAdmin()">Volver</button>
+                <button class="btn btn-info" onclick="exportAllRecords()">Exportar CSV</button>
+                <button class="btn btn-secondary" onclick="logoutUser()">Cerrar sesión</button>
+                <button class="btn btn-danger" onclick="clearAllRecords()">Borrar todo</button>
+            </div>
+        </div>
+        <div class="admin-panel">
+            <h2>Resumen general</h2>
+            <div class="stats-grid" id="stats-grid"></div>
+            <div class="filters" style="margin:12px 0 18px;">
+                <input id="admin-search" oninput="renderAdmin()" placeholder="Buscar estudiante o lección...">
+                <select id="admin-belief-filter" onchange="renderAdmin()">
+                    <option value="">Todas las lecciones</option>
+                </select>
+            </div>
+            <h2 style="margin-top:18px;">Estudiantes inscritos</h2>
+            <div class="table-wrap" style="margin-bottom:22px;">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Estudiante</th>
+                        <th>Contacto</th>
+                        <th>Lección actual</th>
+                        <th>Tomadas</th>
+                        <th>Terminadas</th>
+                        <th>Aceptadas</th>
+                        <th>Última actividad</th>
+                    </tr>
+                    </thead>
+                    <tbody id="students-table"></tbody>
+                </table>
+            </div>
+            <h2>Detalle por lección</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Persona</th>
+                        <th>Contacto</th>
+                        <th>Lección</th>
+                        <th>Estado</th>
+                        <th>Fecha</th>
+                        <th>Observación</th>
+                    </tr>
+                    </thead>
+                    <tbody id="records-table"></tbody>
+                </table>
+            </div>
+            <h2 style="margin-top:22px;">Preguntas al pastor</h2>
+            <div id="admin-questions-list"></div>
+        </div>
+    </section>
+</main>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+    const STORAGE_KEY = "plataforma_fe_de_jesus_v3";
+    const CATEGORIES = ["Fundamentos","Comunión","Salvación","Esperanza","Obediencia","Iglesia","Vida cristiana","Mayordomía","Decisión"];
+    const bgOverlay = document.getElementById("bg-overlay");
+    let currentStudentId = "";
+    let currentStudyKey = "";
+    let currentStepIndex = 0;
+    let adminSession = false;
+    const DEFAULT_ADMIN = {email:"admin@iglesia.com", password:"admin123456", name:"Administrador"};
+    const firebaseConfig = {
+        apiKey: "",
+        authDomain: "",
+        projectId: "",
+        storageBucket: "",
+        messagingSenderId: "",
+        appId: ""
+    };
+    const firebaseEnabled = Boolean(firebaseConfig.apiKey && window.firebase);
+    let firebaseAuth = null;
+    let firebaseDb = null;
+    if(firebaseEnabled){
+        firebase.initializeApp(firebaseConfig);
+        firebaseAuth = firebase.auth();
+        firebaseDb = firebase.firestore();
+    }
+    async function saveRemote(collection, id, data){
+        if(!firebaseDb) return;
+        await firebaseDb.collection(collection).doc(id).set({...data, updatedAtServer: firebase.firestore.FieldValue.serverTimestamp()}, {merge:true});
+    }
+    async function loadRemoteState(){
+        if(!firebaseDb) return getState();
+        const state = getState();
+        const collections = ["students","records","progress","admins","pastorQuestions"];
+        for(const name of collections){
+            const snap = await firebaseDb.collection(name).get();
+            if(name === "progress"){
+                snap.forEach(doc => state.progress[doc.id] = doc.data());
+            }else{
+                state[name] = snap.docs.map(doc => ({id:doc.id, ...doc.data()}));
+            }
+        }
+        setState(state);
+        return state;
+    }
+
+    const BELIEFS = [
+        {id:1, category:"Fundamentos", title:"La Santa Biblia", summary:"La Biblia es la Palabra de Dios, regla de fe y guía segura para conocer a Jesús.", verses:["2 Timoteo 3:16-17","Juan 5:39","Salmos 119:105","Isaías 40:8","Apocalipsis 1:3"], bg:"https://images.unsplash.com/photo-1505664194779-8beaceb93744?q=80&w=1800", questions:[
+            {q:"¿Quién inspiró las Sagradas Escrituras?", verses:["2 Timoteo 3:16-17"], note:"Toda la Escritura es inspirada por Dios y útil para enseñar, corregir e instruir en justicia."},
+            {q:"¿Qué dijo Jesús acerca del estudio de las Escrituras?", verses:["Juan 5:39"], note:"Las Escrituras dan testimonio de Jesús y nos conducen a la vida eterna."},
+            {q:"¿A qué se compara la Santa Biblia?", verses:["Salmos 119:105"], note:"La Palabra de Dios ilumina el camino y orienta las decisiones de la vida diaria."},
+            {q:"¿Cuánto perdurará la Palabra de Dios?", verses:["Isaías 40:8"], note:"La Palabra de Dios permanece para siempre, aunque todo lo humano sea pasajero."},
+            {q:"¿Qué decisión tomarás respecto de la Biblia?", verses:["Apocalipsis 1:3"], note:"La bendición viene al leer, oír y guardar lo que Dios revela."}
+        ]},
+        {id:2, category:"Fundamentos", title:"Dios", summary:"Dios se revela como Padre, Hijo y Espíritu Santo, y desea relacionarse con el ser humano.", verses:["Juan 4:24","Mateo 28:19","1 Juan 4:8","1 Juan 3:1-2","Salmos 40:1-3"], bg:"https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1800", questions:[
+            {q:"¿Cuál es la naturaleza de Dios?", verses:["Juan 4:24"], note:"Dios es Espíritu y busca una adoración sincera en espíritu y en verdad."},
+            {q:"¿Cuáles son las tres personas de la Deidad?", verses:["Mateo 28:19"], note:"La Biblia presenta al Padre, al Hijo y al Espíritu Santo obrando unidos."},
+            {q:"¿Cómo es el carácter de Dios?", verses:["1 Juan 4:8"], note:"La esencia del carácter de Dios es amor."},
+            {q:"¿Cómo considera Dios al ser humano?", verses:["1 Juan 3:1-2"], note:"Dios nos llama hijos y nos ofrece una relación cercana con Él."},
+            {q:"¿Dios se preocupa por nuestros problemas?", verses:["Salmos 40:1-3"], note:"Dios escucha, auxilia y pone un nuevo canto en la vida del creyente."}
+        ]},
+        {id:3, category:"Comunión", title:"La Oración y la Fe", summary:"La oración sincera es comunicación con Dios y la fe permite confiar en sus promesas.", verses:["Mateo 6:6","Santiago 5:16","Juan 14:13","Mateo 21:22","Salmos 55:17"], bg:"https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1800", questions:[
+            {q:"¿Qué es orar según la enseñanza bíblica?", verses:["Mateo 6:6"], note:"Orar es hablar con Dios con sinceridad, confianza y reverencia."},
+            {q:"¿Cuánto poder tiene la oración sincera?", verses:["Santiago 5:16"], note:"La oración eficaz del justo puede mucho."},
+            {q:"¿En nombre de quién debemos orar?", verses:["Juan 14:13"], note:"Jesús enseña a pedir en su nombre, confiando en su mediación."},
+            {q:"¿Qué lugar ocupa la fe al orar?", verses:["Mateo 21:22"], note:"La fe expresa confianza en que Dios oye y responde según su voluntad."},
+            {q:"¿Con qué frecuencia conviene buscar a Dios?", verses:["Salmos 55:17"], note:"La comunión diaria fortalece la vida espiritual."}
+        ]},
+        {id:4, category:"Salvación", title:"El Origen del Pecado", summary:"La Biblia explica el origen del mal y muestra que Dios no es responsable del pecado.", verses:["1 Juan 3:8","Ezequiel 28:15","Isaías 14:12-14","Génesis 3:1-6","Romanos 6:23"], bg:"https://images.unsplash.com/photo-1470770903676-69b98201ea1c?q=80&w=1800", questions:[
+            {q:"¿Quién originó el pecado?", verses:["1 Juan 3:8"], note:"El pecado tiene su origen en la rebelión contra Dios."},
+            {q:"¿Cómo era Lucifer antes de caer?", verses:["Ezequiel 28:15"], note:"Fue creado perfecto hasta que se halló maldad en él."},
+            {q:"¿Qué actitud llevó a la rebelión?", verses:["Isaías 14:12-14"], note:"El orgullo y el deseo de exaltarse contra Dios dieron lugar al conflicto."},
+            {q:"¿Cómo entró el pecado en la experiencia humana?", verses:["Génesis 3:1-6"], note:"La desobediencia rompió la relación de confianza con Dios."},
+            {q:"¿Cuál es la consecuencia del pecado?", verses:["Romanos 6:23"], note:"El pecado produce muerte, pero Dios ofrece vida eterna en Cristo."}
+        ]},
+        {id:5, category:"Salvación", title:"La Salvación", summary:"Dios proveyó en Cristo la solución para el pecado y ofrece vida eterna por gracia.", verses:["Romanos 5:12","Jeremías 2:22","Juan 3:16","Hechos 4:12","Efesios 2:8-9"], bg:"https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1800", questions:[
+            {q:"¿Cuál es la consecuencia final del pecado?", verses:["Romanos 5:12"], note:"El pecado trajo muerte a la humanidad."},
+            {q:"¿Puede el ser humano resolver por sí mismo el problema del pecado?", verses:["Jeremías 2:22"], note:"El esfuerzo humano no puede borrar la culpa; necesitamos la intervención divina."},
+            {q:"¿Qué provisión hizo Dios para salvarnos?", verses:["Juan 3:16"], note:"Dios dio a su Hijo para que todo aquel que cree tenga vida eterna."},
+            {q:"¿En quién se encuentra la salvación?", verses:["Hechos 4:12"], note:"La salvación se encuentra únicamente en Jesucristo."},
+            {q:"¿Cómo recibimos la salvación?", verses:["Efesios 2:8-9"], note:"Somos salvos por gracia mediante la fe, no por méritos propios."}
+        ]},
+        {id:6, category:"Salvación", title:"Perdón de los Pecados", summary:"Dios perdona al pecador arrepentido, restaura la vida y llama a una conversión real.", verses:["1 Juan 1:9","Hechos 3:19","Isaías 1:18","Proverbios 28:13","Juan 8:11"], bg:"https://images.unsplash.com/photo-1490730141103-6cac27aaab94?q=80&w=1800", questions:[
+            {q:"¿Qué promete Dios cuando confesamos nuestros pecados?", verses:["1 Juan 1:9"], note:"Dios perdona y limpia de toda maldad."},
+            {q:"¿Qué llamado hace Dios al pecador?", verses:["Hechos 3:19"], note:"El arrepentimiento y la conversión abren el camino a tiempos de refrigerio espiritual."},
+            {q:"¿Qué ofrece Dios aunque el pecado sea profundo?", verses:["Isaías 1:18"], note:"Dios puede limpiar completamente al que acude a Él."},
+            {q:"¿Qué ocurre con quien encubre su pecado?", verses:["Proverbios 28:13"], note:"La misericordia se alcanza al confesar y apartarse del mal."},
+            {q:"¿Qué le dijo Jesús a quien fue perdonada?", verses:["Juan 8:11"], note:"El perdón de Cristo llama a una vida nueva lejos del pecado."}
+        ]},
+        {id:7, category:"Esperanza", title:"La Segunda Venida de Jesucristo", summary:"Jesús prometió volver de manera visible, poderosa y gloriosa para llevar a los suyos.", verses:["Juan 14:1-3","Hechos 1:9-11","Mateo 24:30","Apocalipsis 1:7","2 Timoteo 4:8"], bg:"https://images.unsplash.com/photo-1464802686167-b939a6910659?q=80&w=1800", questions:[
+            {q:"¿Qué prometió Jesús antes de partir?", verses:["Juan 14:1-3"], note:"Jesús prometió preparar lugar y volver por sus discípulos."},
+            {q:"¿Cómo regresará Jesús?", verses:["Hechos 1:9-11"], note:"Volverá de manera real, así como ascendió al cielo."},
+            {q:"¿En qué forma aparecerá el Hijo del Hombre?", verses:["Mateo 24:30"], note:"Vendrá en las nubes con poder y gran gloria."},
+            {q:"¿Quiénes verán su venida?", verses:["Apocalipsis 1:7"], note:"La venida de Cristo será visible y universal."},
+            {q:"¿Qué actitud debe producir esta esperanza?", verses:["2 Timoteo 4:8"], note:"El creyente ama y espera la venida de su Señor."}
+        ]},
+        {id:8, category:"Esperanza", title:"Señales de la Segunda Venida", summary:"La Biblia presenta señales que llaman a velar, prepararse y confiar en Cristo.", verses:["Mateo 24:3","Mateo 24:36","1 Tesalonicenses 5:1-4","Lucas 21:28","Mateo 24:14"], bg:"https://images.unsplash.com/photo-1435224668334-0f82ec57b605?q=80&w=1800", questions:[
+            {q:"¿Qué preguntaron los discípulos acerca de la venida de Jesús?", verses:["Mateo 24:3"], note:"Querían conocer las señales de su venida y del fin."},
+            {q:"¿Se sabe la fecha exacta del regreso de Jesús?", verses:["Mateo 24:36"], note:"Solo Dios conoce el día y la hora."},
+            {q:"¿Estamos en tinieblas respecto de la venida de Cristo?", verses:["1 Tesalonicenses 5:1-4"], note:"El creyente vive atento, no indiferente."},
+            {q:"¿Qué debe hacer el cristiano al ver cumplirse las señales?", verses:["Lucas 21:28"], note:"Debe levantar la cabeza porque la redención está cerca."},
+            {q:"¿Qué señal misionera debe cumplirse?", verses:["Mateo 24:14"], note:"El evangelio será predicado en todo el mundo."}
+        ]},
+        {id:9, category:"Esperanza", title:"La Muerte", summary:"La Biblia enseña qué ocurre al morir y presenta la esperanza de la resurrección.", verses:["Eclesiastés 9:5","Juan 11:11-14","1 Tesalonicenses 4:13-18","Juan 11:25","1 Corintios 15:51-54"], bg:"https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1800", questions:[
+            {q:"¿Qué saben los muertos según la Biblia?", verses:["Eclesiastés 9:5"], note:"La muerte es presentada como un estado de inconsciencia."},
+            {q:"¿Cómo llamó Jesús a la muerte de Lázaro?", verses:["Juan 11:11-14"], note:"Jesús comparó la muerte con un sueño."},
+            {q:"¿Qué esperanza consuela a los creyentes?", verses:["1 Tesalonicenses 4:13-18"], note:"Los muertos en Cristo resucitarán cuando Jesús venga."},
+            {q:"¿Quién es la resurrección y la vida?", verses:["Juan 11:25"], note:"Jesús es la fuente de vida y esperanza eterna."},
+            {q:"¿Qué ocurrirá con la muerte al final?", verses:["1 Corintios 15:51-54"], note:"La muerte será vencida por la victoria de Cristo."}
+        ]},
+        {id:10, category:"Esperanza", title:"El Juicio", summary:"El juicio revela la justicia de Dios y presenta a Cristo como Abogado del creyente.", verses:["Eclesiastés 12:14","Daniel 7:9-10","1 Juan 2:1","Juan 5:24","Apocalipsis 22:12"], bg:"https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?q=80&w=1800", questions:[
+            {q:"¿Qué será llevado a juicio?", verses:["Eclesiastés 12:14"], note:"Dios juzgará toda obra, buena o mala."},
+            {q:"¿Qué escena de juicio presenta Daniel?", verses:["Daniel 7:9-10"], note:"La Biblia describe un juicio celestial ante el trono de Dios."},
+            {q:"¿Quién es nuestro Abogado?", verses:["1 Juan 2:1"], note:"Jesucristo intercede por el pecador arrepentido."},
+            {q:"¿Qué seguridad ofrece Jesús al creyente?", verses:["Juan 5:24"], note:"Quien oye y cree tiene vida eterna y pasa de muerte a vida."},
+            {q:"¿Qué relación hay entre juicio y recompensa?", verses:["Apocalipsis 22:12"], note:"Cristo viene con recompensa según la obra de cada uno."}
+        ]},
+        {id:11, category:"Obediencia", title:"La Santa Ley de Dios", summary:"Los Diez Mandamientos expresan el carácter de Dios y orientan una vida fiel.", verses:["Éxodo 31:18","Éxodo 20:1-17","Romanos 7:12","Juan 14:15","Santiago 2:10"], bg:"https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?q=80&w=1800", questions:[
+            {q:"¿Quién escribió los mandamientos?", verses:["Éxodo 31:18"], note:"Dios escribió la ley con su dedo."},
+            {q:"¿Dónde se encuentran los Diez Mandamientos?", verses:["Éxodo 20:1-17"], note:"La ley moral de Dios está expresada en los Diez Mandamientos."},
+            {q:"¿Cómo describe Pablo la ley de Dios?", verses:["Romanos 7:12"], note:"La ley es santa, justa y buena."},
+            {q:"¿Qué relación hay entre amor y obediencia?", verses:["Juan 14:15"], note:"El amor a Jesús se expresa en guardar sus mandamientos."},
+            {q:"¿Qué importancia tiene respetar toda la ley?", verses:["Santiago 2:10"], note:"La obediencia no debe ser selectiva sino fiel al Señor."}
+        ]},
+        {id:12, category:"Obediencia", title:"El Día de Descanso", summary:"El sábado es el verdadero día de reposo, memorial de la creación y señal de fidelidad.", verses:["Génesis 2:1-3","Éxodo 20:8-11","Isaías 56:2","Marcos 2:27-28","Hechos 5:29"], bg:"https://images.unsplash.com/photo-1494548162494-384bba4ab999?q=80&w=1800", questions:[
+            {q:"¿Qué hizo Dios al terminar la creación?", verses:["Génesis 2:1-3"], note:"Dios reposó, bendijo y santificó el séptimo día."},
+            {q:"¿Qué mandamiento ordena recordar el día de reposo?", verses:["Éxodo 20:8-11"], note:"El cuarto mandamiento identifica el sábado como día santo."},
+            {q:"¿Qué bendición recibe quien respeta el sábado?", verses:["Isaías 56:2"], note:"Dios bendice a quien guarda el sábado y se aparta del mal."},
+            {q:"¿Para quién fue hecho el sábado?", verses:["Marcos 2:27-28"], note:"El sábado fue hecho para beneficio del ser humano."},
+            {q:"¿Qué principio guía la obediencia cuando hay conflicto?", verses:["Hechos 5:29"], note:"Es necesario obedecer a Dios antes que a los hombres."}
+        ]},
+        {id:13, category:"Obediencia", title:"Cómo Guardar el Sábado", summary:"Guardar el sábado implica honrar a Dios, descansar, servir y seguir el ejemplo de Jesús.", verses:["Isaías 58:13-14","Lucas 4:16","Mateo 12:12","Romanos 2:13","Filipenses 4:13"], bg:"https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1800", questions:[
+            {q:"¿Cómo se honra el sábado?", verses:["Isaías 58:13-14"], note:"El sábado se honra dejando intereses egoístas y deleitándose en Dios."},
+            {q:"¿Cuál fue la costumbre de Jesús en sábado?", verses:["Lucas 4:16"], note:"Jesús asistía a la adoración y lectura bíblica en sábado."},
+            {q:"¿Es correcto hacer el bien en sábado?", verses:["Mateo 12:12"], note:"El sábado es un día apropiado para hacer misericordia."},
+            {q:"¿Qué importancia tiene obedecer lo que Dios manda?", verses:["Romanos 2:13"], note:"Dios llama a oír y practicar su voluntad."},
+            {q:"¿De dónde viene la fuerza para ser fiel?", verses:["Filipenses 4:13"], note:"Cristo fortalece al creyente para vivir en obediencia."}
+        ]},
+        {id:14, category:"Iglesia", title:"La Iglesia", summary:"Cristo fundó su iglesia y llama a su pueblo a vivir en verdad, unidad y misión.", verses:["Mateo 16:16-18","Efesios 2:20","Apocalipsis 12:17","Juan 10:16","Hebreos 10:25"], bg:"https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=1800", questions:[
+            {q:"¿Quién fundó la iglesia cristiana?", verses:["Mateo 16:16-18"], note:"Cristo es el fundador y fundamento vivo de su iglesia."},
+            {q:"¿Sobre qué fundamento se edifica la iglesia?", verses:["Efesios 2:20"], note:"La iglesia se edifica sobre Cristo y la enseñanza apostólica y profética."},
+            {q:"¿Qué características tiene el pueblo fiel de Dios?", verses:["Apocalipsis 12:17"], note:"Guarda los mandamientos de Dios y mantiene el testimonio de Jesús."},
+            {q:"¿Qué desea Jesús para sus ovejas?", verses:["Juan 10:16"], note:"Cristo busca un solo rebaño bajo un solo Pastor."},
+            {q:"¿Por qué es importante congregarse?", verses:["Hebreos 10:25"], note:"La comunidad fortalece la fe y anima a la fidelidad."}
+        ]},
+        {id:15, category:"Decisión", title:"El Bautismo", summary:"El bautismo expresa fe, arrepentimiento y unión con Cristo y su iglesia.", verses:["Mateo 28:18-20","Marcos 16:16","Hechos 2:38","Romanos 6:3-6","Hechos 8:36-38"], bg:"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1800", questions:[
+            {q:"¿Por qué debemos bautizarnos?", verses:["Mateo 28:18-20"], note:"Cristo ordenó hacer discípulos y bautizarlos."},
+            {q:"¿Qué relación hay entre fe y bautismo?", verses:["Marcos 16:16"], note:"El bautismo acompaña una respuesta de fe al evangelio."},
+            {q:"¿Qué llamado hizo Pedro a quienes creyeron?", verses:["Hechos 2:38"], note:"Arrepentirse y bautizarse en el nombre de Jesucristo."},
+            {q:"¿Qué simboliza el bautismo?", verses:["Romanos 6:3-6"], note:"Simboliza muerte al pecado y resurrección a una vida nueva."},
+            {q:"¿Qué decisión tomó el etíope al comprender la verdad?", verses:["Hechos 8:36-38"], note:"Pidió el bautismo y confesó su fe."}
+        ]},
+        {id:16, category:"Vida cristiana", title:"La Vida Cristiana", summary:"Seguir a Jesús transforma la manera de vivir, pensar, servir y relacionarse.", verses:["Gálatas 2:20","1 Tesalonicenses 5:23","Filipenses 1:6","Romanos 12:1-2","Mateo 5:16"], bg:"https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1800", questions:[
+            {q:"¿Cómo describe Pablo la vida en Cristo?", verses:["Gálatas 2:20"], note:"La vida cristiana es vivir por la fe del Hijo de Dios."},
+            {q:"¿Qué desea Dios santificar?", verses:["1 Tesalonicenses 5:23"], note:"Dios desea santificar todo el ser: espíritu, alma y cuerpo."},
+            {q:"¿Quién completa la obra espiritual iniciada?", verses:["Filipenses 1:6"], note:"Dios perfecciona la obra que comenzó en el creyente."},
+            {q:"¿Cómo debe presentar su vida el cristiano?", verses:["Romanos 12:1-2"], note:"La vida se entrega como sacrificio vivo y se transforma por la renovación de la mente."},
+            {q:"¿Qué efecto debe tener la vida cristiana en otros?", verses:["Mateo 5:16"], note:"Las buenas obras glorifican al Padre."}
+        ]},
+        {id:17, category:"Vida cristiana", title:"Principios de Salud y Normas de Vida", summary:"Dios se interesa por el cuerpo, la salud, la modestia y el testimonio del creyente.", verses:["1 Corintios 6:19-20","Proverbios 20:1","1 Timoteo 2:9-10","1 Pedro 2:21","3 Juan 1:2"], bg:"https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1800", questions:[
+            {q:"¿Cómo considera Dios el cuerpo humano?", verses:["1 Corintios 6:19-20"], note:"El cuerpo es templo del Espíritu Santo y debe glorificar a Dios."},
+            {q:"¿Por qué debemos evitar bebidas alcohólicas?", verses:["Proverbios 20:1"], note:"La Biblia advierte contra aquello que engaña y domina."},
+            {q:"¿Cómo debe ser el arreglo personal?", verses:["1 Timoteo 2:9-10"], note:"La modestia y las buenas obras reflejan una vida consagrada."},
+            {q:"¿Por qué evitar espectáculos inconvenientes?", verses:["1 Pedro 2:21"], note:"Cristo dejó ejemplo para seguir sus pisadas."},
+            {q:"¿Qué desea Dios para nuestra salud?", verses:["3 Juan 1:2"], note:"Dios desea bienestar integral y prosperidad espiritual."}
+        ]},
+        {id:18, category:"Mayordomía", title:"El Sostén de la Iglesia", summary:"La fidelidad en diezmos y ofrendas expresa gratitud y sostiene la misión de Dios.", verses:["Malaquías 3:8-10","Levítico 27:30","2 Corintios 9:7","1 Corintios 16:2","Mateo 6:33"], bg:"https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=1800", questions:[
+            {q:"¿Qué pide Dios respecto de diezmos y ofrendas?", verses:["Malaquías 3:8-10"], note:"Dios llama a la fidelidad y promete bendición."},
+            {q:"¿A quién pertenece el diezmo?", verses:["Levítico 27:30"], note:"El diezmo es santo para Jehová."},
+            {q:"¿Con qué actitud se debe dar?", verses:["2 Corintios 9:7"], note:"Dios ama al dador alegre."},
+            {q:"¿Cómo debe planificarse la ofrenda?", verses:["1 Corintios 16:2"], note:"La generosidad debe ser ordenada y proporcional."},
+            {q:"¿Qué prioridad debe tener Dios en la vida?", verses:["Mateo 6:33"], note:"Buscar primero el reino de Dios ordena todas las áreas de la vida."}
+        ]},
+        {id:19, category:"Iglesia", title:"El Don de Profecía", summary:"Dios guía a su pueblo por medio del don profético y llama a probar todo por la Biblia.", verses:["Amós 3:7","Apocalipsis 12:17","Apocalipsis 19:10","1 Tesalonicenses 5:19-21","2 Crónicas 20:20"], bg:"https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=1800", questions:[
+            {q:"¿A quién revela Dios sus designios?", verses:["Amós 3:7"], note:"Dios revela sus planes a sus siervos los profetas."},
+            {q:"¿Qué rasgo tiene el pueblo fiel de Dios?", verses:["Apocalipsis 12:17"], note:"Guarda los mandamientos de Dios y tiene el testimonio de Jesús."},
+            {q:"¿Qué es el testimonio de Jesús?", verses:["Apocalipsis 19:10"], note:"El testimonio de Jesús es el espíritu de la profecía."},
+            {q:"¿Cómo debemos tratar las profecías?", verses:["1 Tesalonicenses 5:19-21"], note:"No se deben menospreciar; deben examinarse y retener lo bueno."},
+            {q:"¿Qué promesa acompaña la confianza en la dirección profética?", verses:["2 Crónicas 20:20"], note:"Creer a Dios y a sus profetas fortalece la fidelidad."}
+        ]},
+        {id:20, category:"Decisión", title:"Dios nos Llama", summary:"Dios invita a una entrega personal, al bautismo y a vivir como discípulo y testigo.", verses:["Lucas 5:27-28","Apocalipsis 3:20","Hechos 22:16","Mateo 24:14","Filipenses 4:13"], bg:"https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?q=80&w=1800", questions:[
+            {q:"¿Qué llamado dirigió Jesús a Leví?", verses:["Lucas 5:27"], note:"Jesús lo llamó: Sígueme."},
+            {q:"¿Cómo respondió Leví al llamado?", verses:["Lucas 5:28"], note:"Lo dejó todo, se levantó y siguió a Jesús."},
+            {q:"¿Qué otro llamado tierno hace Jesús?", verses:["Apocalipsis 3:20"], note:"Jesús llama a la puerta del corazón y desea entrar."},
+            {q:"¿Qué decisión debemos tomar ahora?", verses:["Hechos 22:16"], note:"El llamado bíblico es levantarse, bautizarse e invocar el nombre del Señor."},
+            {q:"¿Qué importancia tiene testificar?", verses:["Mateo 24:14","Filipenses 4:13"], note:"El discípulo comparte su fe confiando en la fuerza de Cristo."}
+        ]}
+    ];
+
+    function getState(){
+        const fallback = {students:[], records:[], notes:{}, progress:{}, admins:[], pastorQuestions:[]};
+        try{
+            const state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || fallback;
+            const normalized = {
+                students: state.students || [],
+                records: state.records || [],
+                notes: state.notes || {},
+                progress: state.progress || {},
+                admins: state.admins || [],
+                pastorQuestions: state.pastorQuestions || []
+            };
+            normalized.records.forEach(record => {
+                const key = progressKey(record.studentId, record.beliefId);
+                if(!normalized.progress[key]){
+                    normalized.progress[key] = {
+                        studentId: record.studentId,
+                        studentName: record.studentName,
+                        beliefId: record.beliefId,
+                        beliefTitle: record.beliefTitle,
+                        openedAt: record.updatedAt,
+                        lastActivity: record.updatedAt,
+                        currentStep: 4,
+                        totalSteps: 4,
+                        status: record.accepted ? "Aceptada" : "Terminada",
+                        completed: true,
+                        accepted: record.accepted
+                    };
+                }
+            });
+            return normalized;
+        }catch(e){return fallback}
+    }
+    function setState(state){localStorage.setItem(STORAGE_KEY, JSON.stringify(state))}
+    function slug(value){return String(value).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}
+    function today(){return new Date().toLocaleDateString("es-CO",{year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"})}
+    function beliefById(id){return BELIEFS.find(b => b.id === Number(id))}
+    function activeStudent(){
+        const state = getState();
+        return state.students.find(s => s.id === currentStudentId) || state.students[state.students.length - 1] || null;
+    }
+    function progressKey(studentId, beliefId){return `${studentId}_belief_${beliefId}`}
+    function getProgress(state, studentId, beliefId){return state.progress[progressKey(studentId, beliefId)] || null}
+    function touchProgress(beliefId, patch){
+        const student = activeStudent();
+        if(!student) return;
+        const state = getState();
+        const key = progressKey(student.id, beliefId);
+        const belief = beliefById(beliefId);
+        const existing = state.progress[key] || {
+            studentId: student.id,
+            studentName: student.name,
+            beliefId: belief.id,
+            beliefTitle: belief.title,
+            openedAt: today(),
+            currentStep: 1,
+            totalSteps: buildStudy(belief).questions.length + 1,
+            status: "En estudio",
+            completed: false,
+            accepted: false
+        };
+        state.progress[key] = {...existing, studentName:student.name, lastActivity:today(), ...patch};
+        setState(state);
+        saveRemote("progress", key, state.progress[key]);
+    }
+    function showLanding(){
+        document.getElementById("landing-panel").classList.remove("hidden");
+        document.getElementById("student-registration").classList.add("hidden");
+        document.getElementById("modules-panel").classList.add("hidden");
+        document.getElementById("admin-auth-view").classList.add("hidden");
+        document.getElementById("admin-view").classList.add("hidden");
+        bgOverlay.style.backgroundImage = "url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1800')";
+        window.scrollTo({top:0,behavior:"smooth"});
+    }
+    function showStudentRegistration(){
+        document.getElementById("student-registration").classList.remove("hidden");
+        document.getElementById("student-name").focus();
+    }
+    async function showModules(){
+        document.getElementById("landing-panel").classList.add("hidden");
+        document.getElementById("modules-panel").classList.remove("hidden");
+        await loadRemoteState();
+        renderStudent();
+        renderBeliefs();
+        renderStudentQuestions();
+        window.scrollTo({top:0,behavior:"smooth"});
+    }
+
+    async function saveStudent(event){
+        event.preventDefault();
+        const state = getState();
+        const name = document.getElementById("student-name").value.trim();
+        const phone = document.getElementById("student-phone").value.trim();
+        const email = document.getElementById("student-email").value.trim().toLowerCase();
+        const password = document.getElementById("student-password").value;
+        if(!name || !phone || !email || password.length < 6) {
+            alert("Nombre, teléfono, correo y contraseña de mínimo 6 caracteres son obligatorios.");
+            return;
+        }
+        let firebaseUid = "";
+        try{
+            if(firebaseAuth){
+                const credential = await firebaseAuth.createUserWithEmailAndPassword(email, password);
+                firebaseUid = credential.user.uid;
+            }
+        }catch(error){
+            if(error.code === "auth/email-already-in-use" && firebaseAuth){
+                const credential = await firebaseAuth.signInWithEmailAndPassword(email, password);
+                firebaseUid = credential.user.uid;
+            }else{
+                alert(error.message || "No se pudo registrar el estudiante.");
+                return;
+            }
+        }
+        const existing = state.students.find(s => s.id === currentStudentId) || state.students.find(s => s.email === email || s.name.toLowerCase() === name.toLowerCase());
+        const student = {
+            id: firebaseUid || (existing ? existing.id : `${Date.now()}-${slug(name)}`),
+            name,
+            phone,
+            email,
+            role:"student",
+            createdAt: existing ? existing.createdAt : today()
+        };
+        if(existing){
+            state.students = state.students.map(s => s.id === existing.id ? student : s);
+        }else{
+            state.students.push(student);
+        }
+        currentStudentId = student.id;
+        setState(state);
+        await saveRemote("students", student.id, student);
+        renderStudent();
+        showModules();
+    }
+
+    function renderStudent(){
+        const student = activeStudent();
+        const summary = document.getElementById("student-summary");
+        const studyPill = document.getElementById("study-student-pill");
+        if(!student){
+            summary.classList.add("hidden");
+            studyPill.innerHTML = "Sin estudiante activo";
+            document.getElementById("active-student-name").innerHTML = "Sin estudiante";
+            return;
+        }
+        document.getElementById("student-name").value = student.name || "";
+        document.getElementById("student-phone").value = student.phone || "";
+        document.getElementById("student-email").value = student.email || "";
+        summary.classList.remove("hidden");
+        summary.innerHTML = `Estudiante activo: ${student.name}`;
+        studyPill.innerHTML = `Estudiando con: ${student.name}`;
+        document.getElementById("active-student-name").innerHTML = student.name;
+    }
+
+    function renderBeliefs(){
+        const grid = document.getElementById("beliefs-grid");
+        const query = document.getElementById("search-beliefs").value.toLowerCase();
+        const category = document.getElementById("category-filter").value;
+        const student = activeStudent();
+        const state = getState();
+        const filtered = BELIEFS.filter(b => (!category || b.category === category) && (`${b.id} ${b.title} ${b.summary}`.toLowerCase().includes(query)));
+        grid.innerHTML = filtered.map(b => {
+            const accepted = student && state.records.some(r => r.studentId === student.id && r.beliefId === b.id && r.accepted);
+            const progress = student ? getProgress(state, student.id, b.id) : null;
+            const previousProgress = student && b.id > 1 ? getProgress(state, student.id, b.id - 1) : null;
+            const locked = b.id > 1 && (!previousProgress || !previousProgress.completed);
+            const statusText = accepted ? "Aceptada" : progress && progress.completed ? "Terminada" : progress ? "En estudio" : "Pendiente";
+            return `
+            <article class="belief-card ${locked ? "locked" : ""}">
+                <div class="belief-meta"><div class="belief-num">${b.id}</div><div class="category">${b.category}</div></div>
+                <h3>${b.title}</h3>
+                <p>${b.summary}</p>
+                <div class="status-row">
+                    <span class="status ${accepted ? "accepted" : ""}">${locked ? "Bloqueada" : statusText}</span>
+                    <button class="btn ${locked ? "btn-secondary" : "btn-primary"}" ${locked ? "disabled" : `onclick="openStudy(${b.id})"`}>${locked ? "Anterior primero" : progress ? "Continuar" : "Estudiar"}</button>
+                </div>
+            </article>`;
+        }).join("");
+    }
+
+    function sendPastorQuestion(){
+        const student = activeStudent();
+        const textarea = document.getElementById("pastor-question-text");
+        const question = textarea.value.trim();
+        if(!student || !question){
+            alert("Escribe tu pregunta antes de enviarla.");
+            return;
+        }
+        const state = getState();
+        const item = {
+            id:`q-${Date.now()}`,
+            studentId:student.id,
+            studentName:student.name,
+            studentEmail:student.email || "",
+            studentPhone:student.phone || "",
+            question,
+            answer:"",
+            status:"Pendiente",
+            createdAt:today(),
+            answeredAt:""
+        };
+        state.pastorQuestions.push(item);
+        setState(state);
+        saveRemote("pastorQuestions", item.id, item);
+        textarea.value = "";
+        renderStudentQuestions();
+        alert("Tu pregunta fue enviada al pastor.");
+    }
+
+    function renderStudentQuestions(){
+        const container = document.getElementById("student-questions-list");
+        if(!container) return;
+        const student = activeStudent();
+        const state = getState();
+        const items = student ? state.pastorQuestions.filter(q => q.studentId === student.id).slice().reverse() : [];
+        container.innerHTML = items.length ? items.map(q => `
+            <div class="message-item">
+                <strong>${q.createdAt} · ${q.status}</strong>
+                <p>${q.question}</p>
+                ${q.answer ? `<div class="message-answer"><strong>Respuesta del pastor</strong><p>${q.answer}</p></div>` : `<p class="small-muted" style="margin-top:8px;">Esperando respuesta del pastor.</p>`}
+            </div>
+        `).join("") : `<p class="small-muted" style="margin-top:12px;">Todavía no has enviado preguntas.</p>`;
+    }
+
+    function renderAdminQuestions(){
+        const container = document.getElementById("admin-questions-list");
+        if(!container) return;
+        const state = getState();
+        const items = state.pastorQuestions.slice().reverse();
+        container.innerHTML = items.length ? items.map(q => `
+            <div class="message-item">
+                <strong>${q.studentName} · ${q.createdAt} · ${q.status}</strong>
+                <p>${q.question}</p>
+                ${q.answer ? `<div class="message-answer"><strong>Respuesta enviada</strong><p>${q.answer}</p></div>` : ""}
+                <div class="field" style="margin-top:12px;">
+                    <label for="answer-${q.id}">Responder</label>
+                    <textarea id="answer-${q.id}" placeholder="Escribe la respuesta para el estudiante...">${q.answer || ""}</textarea>
+                </div>
+                <button class="btn btn-info" onclick="savePastorAnswer('${q.id}')">Enviar respuesta</button>
+            </div>
+        `).join("") : `<p class="small-muted">Todavía no hay preguntas de estudiantes.</p>`;
+    }
+
+    function savePastorAnswer(questionId){
+        const textarea = document.getElementById(`answer-${questionId}`);
+        const answer = textarea.value.trim();
+        if(!answer){
+            alert("Escribe una respuesta antes de enviarla.");
+            return;
+        }
+        const state = getState();
+        const index = state.pastorQuestions.findIndex(q => q.id === questionId);
+        if(index < 0) return;
+        state.pastorQuestions[index] = {...state.pastorQuestions[index], answer, status:"Respondida", answeredAt:today()};
+        setState(state);
+        saveRemote("pastorQuestions", questionId, state.pastorQuestions[index]);
+        renderAdminQuestions();
+        alert("Respuesta enviada al estudiante.");
+    }
+
+    function buildStudy(belief){
+        const questions = belief.questions || [];
+        return {
+            prefix:`c${belief.id}`,
+            title:`Lección ${belief.id}: ${belief.title}`,
+            bgDefault:belief.bg,
+            questions:questions.map((item,index) => ({
+                q:item.q,
+                bg:index === 0 ? belief.bg : "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1800",
+                verses:item.verses.map(ref => ({ref, txt:"Lee este pasaje y escribe qué afirma acerca de la creencia estudiada."})),
+                theology:{author:"La Fe de Jesús", txt:item.note}
+            })),
+            finalDecision:`Después de haber leído y entendido la lección “${belief.title}”, deseo aceptar esta enseñanza bíblica y vivirla con la ayuda de Dios.`,
+            finalPrompt:"¿Aceptas esta lección y deseas avanzar a la siguiente?"
+        };
+    }
+
+    function openStudy(id){
+        const student = activeStudent();
+        if(!student){
+            document.getElementById("student-name").focus();
+            alert("Primero registra el nombre del estudiante para poder guardar su avance.");
+            return;
+        }
+        currentStudyKey = Number(id);
+        currentStepIndex = 0;
+        document.getElementById("home-view").classList.add("hidden");
+        document.getElementById("admin-view").classList.add("hidden");
+        document.getElementById("study-view").classList.remove("hidden");
+        touchProgress(currentStudyKey, {status:"En estudio", currentStep:1});
+        renderStudent();
+        renderStudyHtml(id);
+        loadSavedAnswers(id);
+        updateStepView();
+        window.scrollTo({top:0,behavior:"smooth"});
+    }
+
+    function exitToHome(){
+        document.getElementById("study-view").classList.add("hidden");
+        document.getElementById("home-view").classList.remove("hidden");
+        bgOverlay.style.backgroundImage = "url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1800')";
+        showModules();
+    }
+
+    function renderStudyHtml(id){
+        const belief = beliefById(id);
+        const study = buildStudy(belief);
+        const container = document.getElementById("dynamic-steps-container");
+        const student = activeStudent();
+        const state = getState();
+        const existing = state.records.find(r => r.studentId === student.id && r.beliefId === belief.id);
+        let html = "";
+        study.questions.forEach((item,index) => {
+            const stepNum = index + 1;
+            const versesHtml = item.verses.map(v => `<div class="verse-item"><strong>${v.ref}</strong>${v.txt}</div>`).join("");
+            html += `
+            <div class="step ${index === 0 ? "active" : ""}" data-bg="${item.bg}">
+                <div class="card">
+                    <div class="tag">${study.title} | Pregunta ${stepNum}</div>
+                    <h2 class="question" id="${study.prefix}-q-${stepNum}">${item.q}</h2>
+                    <div class="verses-grid">${versesHtml}</div>
+                    <div class="field">
+                        <label for="${study.prefix}-ans-${stepNum}">Reflexión o respuesta</label>
+                        <textarea id="${study.prefix}-ans-${stepNum}" placeholder="Escribe aquí la respuesta del estudiante..." oninput="saveIndividualAnswer(${stepNum})"></textarea>
+                    </div>
+                    <div class="theology-box"><h4>${item.theology.author}</h4><p>${item.theology.txt}</p></div>
+                    <div class="nav-buttons">
+                        ${stepNum > 1 ? `<button class="btn btn-secondary" onclick="prevStep()">Anterior</button>` : ""}
+                        <button class="btn btn-primary" onclick="nextStep()">${stepNum < study.questions.length ? "Continuar" : "Finalizar estudio"}</button>
+                    </div>
+                </div>
+            </div>`;
+        });
+        html += `
+        <div class="step" id="final-screen">
+            <div class="card">
+                <div class="tag">Decisión personal</div>
+                <h2 class="question">Mi respuesta a Dios</h2>
+                <p style="line-height:1.75;color:#e2e8f0;">${study.finalDecision}</p>
+                <div class="decision-box">
+                    <label><input id="accept-belief" type="checkbox" ${existing && existing.accepted ? "checked" : ""}> ${study.finalPrompt}</label>
+                </div>
+                <div class="field">
+                    <label for="decision-note">Observación del instructor</label>
+                    <textarea id="decision-note" placeholder="Ej. Aceptó con alegría, necesita repasar textos, desea bautismo..." oninput="saveDecision(false)">${existing ? existing.note || "" : ""}</textarea>
+                </div>
+                <button class="btn btn-primary" onclick="saveDecision(true)">Guardar decisión</button>
+                <button class="btn btn-info" onclick="downloadStudyNotes()" style="margin-top:10px;">Descargar notas del estudiante</button>
+                <div class="nav-buttons">
+                    <button class="btn btn-secondary" onclick="prevStep()">Revisar respuestas</button>
+                    <button class="btn btn-danger" onclick="clearStudyAndReset()">Borrar respuestas de esta creencia</button>
+                </div>
+            </div>
+            <div class="signature">Desarrollado para el ministerio del Pr. Bladimir Alvarado</div>
+        </div>`;
+        container.innerHTML = html;
+    }
+
+    function updateStepView(){
+        const steps = document.querySelectorAll("#dynamic-steps-container .step");
+        const progress = steps.length > 1 ? (currentStepIndex / (steps.length - 1)) * 100 : 0;
+        document.getElementById("bar").style.width = progress + "%";
+        const newBg = steps[currentStepIndex] && steps[currentStepIndex].getAttribute("data-bg");
+        const belief = beliefById(currentStudyKey);
+        bgOverlay.style.backgroundImage = `url('${newBg || belief.bg}')`;
+    }
+    function nextStep(){
+        const steps = document.querySelectorAll("#dynamic-steps-container .step");
+        if(currentStepIndex < steps.length - 1){
+            steps[currentStepIndex].classList.remove("active");
+            currentStepIndex++;
+            steps[currentStepIndex].classList.add("active");
+            if(currentStepIndex === steps.length - 1){
+                touchProgress(currentStudyKey, {status:"Terminada", completed:true, currentStep:currentStepIndex + 1});
+            }else{
+                touchProgress(currentStudyKey, {status:"En estudio", currentStep:currentStepIndex + 1});
+            }
+            updateStepView();
+            window.scrollTo({top:0,behavior:"smooth"});
+        }
+    }
+    function prevStep(){
+        const steps = document.querySelectorAll("#dynamic-steps-container .step");
+        if(currentStepIndex > 0){
+            steps[currentStepIndex].classList.remove("active");
+            currentStepIndex--;
+            steps[currentStepIndex].classList.add("active");
+            touchProgress(currentStudyKey, {currentStep:currentStepIndex + 1});
+            updateStepView();
+            window.scrollTo({top:0,behavior:"smooth"});
+        }
+    }
+    function answerKey(stepNum){
+        const student = activeStudent();
+        return `${student.id}_belief_${currentStudyKey}_ans_${stepNum}`;
+    }
+    function saveIndividualAnswer(stepNum){
+        const state = getState();
+        const study = buildStudy(beliefById(currentStudyKey));
+        state.notes[answerKey(stepNum)] = document.getElementById(`${study.prefix}-ans-${stepNum}`).value;
+        setState(state);
+        touchProgress(currentStudyKey, {status:"En estudio", currentStep:stepNum});
+    }
+    function loadSavedAnswers(id){
+        const state = getState();
+        const study = buildStudy(beliefById(id));
+        study.questions.forEach((_,index) => {
+            const stepNum = index + 1;
+            const textarea = document.getElementById(`${study.prefix}-ans-${stepNum}`);
+            const saved = state.notes[answerKey(stepNum)];
+            if(textarea && saved) textarea.value = saved;
+        });
+    }
+    function saveDecision(showMessage){
+        const student = activeStudent();
+        const belief = beliefById(currentStudyKey);
+        const accepted = document.getElementById("accept-belief").checked;
+        const note = document.getElementById("decision-note").value.trim();
+        const state = getState();
+        const record = {studentId:student.id, studentName:student.name, phone:student.phone, beliefId:belief.id, beliefTitle:belief.title, accepted, note, updatedAt:today()};
+        const index = state.records.findIndex(r => r.studentId === student.id && r.beliefId === belief.id);
+        if(index >= 0) state.records[index] = record; else state.records.push(record);
+        setState(state);
+        saveRemote("records", `${student.id}_lesson_${belief.id}`, record);
+        touchProgress(currentStudyKey, {status: accepted ? "Aceptada" : "Terminada", completed:true, accepted});
+        if(showMessage) alert("Decisión guardada correctamente.");
+    }
+    function clearStudyAndReset(){
+        if(!confirm("¿Deseas borrar las respuestas de esta creencia para el estudiante activo?")) return;
+        const state = getState();
+        const study = buildStudy(beliefById(currentStudyKey));
+        study.questions.forEach((_,index) => delete state.notes[answerKey(index + 1)]);
+        setState(state);
+        openStudy(currentStudyKey);
+    }
+    function downloadStudyNotes(){
+        const student = activeStudent();
+        const belief = beliefById(currentStudyKey);
+        const study = buildStudy(belief);
+        const state = getState();
+        let content = `NOTAS DE ESTUDIO BIBLICO\nEstudiante: ${student.name}\nCreencia ${belief.id}: ${belief.title}\nInstructor: Pr. Bladimir Alvarado\n========================================\n\n`;
+        study.questions.forEach((item,index) => {
+            const stepNum = index + 1;
+            content += `Pregunta ${stepNum}: ${item.q}\n`;
+            content += `Respuesta:\n${state.notes[answerKey(stepNum)] || "Sin respuesta escrita."}\n\n`;
+        });
+        const record = state.records.find(r => r.studentId === student.id && r.beliefId === belief.id);
+        content += `Decision: ${record && record.accepted ? "Acepto la leccion" : "Pendiente o no marcada"}\nObservacion: ${record ? record.note || "Sin observacion." : "Sin registro."}\n`;
+        downloadFile(`Notas_${slug(student.name)}_leccion_${belief.id}.txt`, content, "text/plain;charset=utf-8");
+    }
+    function showAdmin(){
+        const state = getState();
+        document.getElementById("home-view").classList.add("hidden");
+        document.getElementById("study-view").classList.add("hidden");
+        document.getElementById("admin-view").classList.add("hidden");
+        document.getElementById("admin-auth-view").classList.remove("hidden");
+        const hasAdmin = state.admins.length > 0;
+        document.getElementById("admin-auth-title").innerHTML = hasAdmin ? "Ingresar como admin" : "Registro de admin";
+        document.getElementById("admin-auth-submit").innerHTML = hasAdmin ? "Entrar al panel" : "Crear admin";
+        document.getElementById("admin-name-field").classList.toggle("hidden", hasAdmin);
+        document.getElementById("admin-name").required = !hasAdmin;
+        document.getElementById("admin-auth-help").innerHTML = hasAdmin ? "Ingresa con el correo y contraseña del administrador registrado." : "Este primer registro crea el administrador local. Al subir a Firebase, estos campos pueden conectarse a Firebase Authentication.";
+        window.scrollTo({top:0,behavior:"smooth"});
+    }
+    function exitAdminAuth(){
+        document.getElementById("admin-auth-view").classList.add("hidden");
+        document.getElementById("home-view").classList.remove("hidden");
+        showLanding();
+    }
+    async function handleAdminAuth(event){
+        event.preventDefault();
+        const state = getState();
+        const email = document.getElementById("admin-email").value.trim().toLowerCase();
+        const password = document.getElementById("admin-password").value;
+        if(password.length < 6){
+            alert("La contraseña debe tener mínimo 6 caracteres.");
+            return;
+        }
+        if(state.admins.length === 0){
+            const name = document.getElementById("admin-name").value.trim();
+            if(!name){
+                alert("Escribe el nombre del administrador.");
+                return;
+            }
+            let adminId = `admin-${Date.now()}`;
+            try{
+                if(firebaseAuth){
+                    const credential = await firebaseAuth.createUserWithEmailAndPassword(email, password);
+                    adminId = credential.user.uid;
+                }
+            }catch(error){
+                alert(error.message || "No se pudo crear el administrador.");
+                return;
+            }
+            const adminData = {id:adminId, name, email, role:"admin", createdAt:today()};
+            state.admins.push({...adminData, password});
+            setState(state);
+            await saveRemote("admins", adminId, adminData);
+            adminSession = true;
+            openAdminPanel();
+            return;
+        }
+        let admin = state.admins.find(item => item.email === email && item.password === password);
+        if(!admin && email === DEFAULT_ADMIN.email && password === DEFAULT_ADMIN.password){
+            admin = {id:"default-admin", ...DEFAULT_ADMIN, role:"admin", createdAt:today()};
+            if(!state.admins.some(item => item.email === DEFAULT_ADMIN.email)){
+                state.admins.push(admin);
+                setState(state);
+            }
+        }
+        if(firebaseAuth){
+            try{
+                const credential = await firebaseAuth.signInWithEmailAndPassword(email, password);
+                admin = state.admins.find(item => item.id === credential.user.uid || item.email === email);
+            }catch(error){
+                if(!(email === DEFAULT_ADMIN.email && password === DEFAULT_ADMIN.password)){
+                    alert(error.message || "Correo o contraseña de administrador incorrectos.");
+                    return;
+                }
+            }
+        }
+        if(!admin){
+            alert("Correo o contraseña de administrador incorrectos.");
+            return;
+        }
+        adminSession = true;
+        openAdminPanel();
+    }
+    async function openAdminPanel(){
+        if(!adminSession){
+            showAdmin();
+            return;
+        }
+        await loadRemoteState();
+        document.getElementById("home-view").classList.add("hidden");
+        document.getElementById("admin-auth-view").classList.add("hidden");
+        document.getElementById("study-view").classList.add("hidden");
+        document.getElementById("admin-view").classList.remove("hidden");
+        renderAdminOptions();
+        renderAdmin();
+        renderAdminQuestions();
+        window.scrollTo({top:0,behavior:"smooth"});
+    }
+    function exitAdmin(){
+        adminSession = false;
+        document.getElementById("admin-view").classList.add("hidden");
+        document.getElementById("home-view").classList.remove("hidden");
+        showLanding();
+    }
+    async function logoutUser(){
+        adminSession = false;
+        currentStudentId = "";
+        if(firebaseAuth){
+            try{ await firebaseAuth.signOut(); }catch(e){}
+        }
+        showLanding();
+    }
+    function renderAdminOptions(){
+        const select = document.getElementById("admin-belief-filter");
+        select.innerHTML = `<option value="">Todas las lecciones</option>` + BELIEFS.map(b => `<option value="${b.id}">${b.id}. ${b.title}</option>`).join("");
+    }
+    function renderAdmin(){
+        const state = getState();
+        const query = document.getElementById("admin-search").value.toLowerCase();
+        const beliefFilter = document.getElementById("admin-belief-filter").value;
+        const accepted = state.records.filter(r => r.accepted);
+        const progressList = Object.values(state.progress || {});
+        const completed = progressList.filter(p => p.completed);
+        const uniqueAcceptedPeople = new Set(accepted.map(r => r.studentId)).size;
+        document.getElementById("stats-grid").innerHTML = `
+            <div class="stat"><strong>${state.students.length}</strong><span>Estudiantes registrados</span></div>
+            <div class="stat"><strong>${progressList.length}</strong><span>Lecciones tomadas</span></div>
+            <div class="stat"><strong>${completed.length}</strong><span>Lecciones terminadas</span></div>
+            <div class="stat"><strong>${accepted.length}</strong><span>Lecciones aceptadas</span></div>`;
+        const studentRows = state.students
+            .map(student => {
+                const studentProgress = progressList.filter(p => p.studentId === student.id);
+                const studentRecords = state.records.filter(r => r.studentId === student.id && r.accepted);
+                const current = studentProgress.slice().sort((a,b) => String(b.lastActivity || "").localeCompare(String(a.lastActivity || "")))[0];
+                return {student, studentProgress, studentRecords, current};
+            })
+            .filter(row => {
+                const text = `${row.student.name} ${row.student.phone || ""} ${row.current ? row.current.beliefTitle : ""}`.toLowerCase();
+                return !query || text.includes(query);
+            });
+        document.getElementById("students-table").innerHTML = studentRows.length ? studentRows.map(row => `
+            <tr>
+                <td>${row.student.name}</td>
+                <td>${row.student.phone || "Sin contacto"}</td>
+                <td>${row.current ? `${row.current.beliefId}. ${row.current.beliefTitle} (${row.current.status})` : "Sin lecciones tomadas"}</td>
+                <td>${row.studentProgress.length}</td>
+                <td>${row.studentProgress.filter(p => p.completed).length}</td>
+                <td>${row.studentRecords.length}</td>
+                <td>${row.current ? row.current.lastActivity || row.current.openedAt : row.student.createdAt}</td>
+            </tr>`).join("") : `<tr><td colspan="7">Todavía no hay estudiantes inscritos para mostrar.</td></tr>`;
+
+        const progressRows = progressList
+            .filter(p => (!beliefFilter || String(p.beliefId) === beliefFilter) && (`${p.studentName} ${p.beliefTitle} ${p.status}`.toLowerCase().includes(query)))
+            .sort((a,b) => a.studentName.localeCompare(b.studentName) || a.beliefId - b.beliefId);
+        document.getElementById("records-table").innerHTML = progressRows.length ? progressRows.map(p => {
+            const student = state.students.find(s => s.id === p.studentId) || {};
+            const record = state.records.find(r => r.studentId === p.studentId && r.beliefId === p.beliefId);
+            return `
+            <tr>
+                <td>${p.studentName}</td>
+                <td>${student.phone || "Sin contacto"}</td>
+                <td>${p.beliefId}. ${p.beliefTitle}</td>
+                <td>${record && record.accepted ? "Aceptó" : p.status}</td>
+                <td>${p.lastActivity || p.openedAt}</td>
+                <td>${record && record.note ? record.note : `Paso ${p.currentStep || 1} de ${p.totalSteps || "-"}`}</td>
+            </tr>`;
+        }).join("") : `<tr><td colspan="6">Todavía no hay lecciones tomadas para mostrar.</td></tr>`;
+    }
+    function exportAllRecords(){
+        const state = getState();
+        const header = ["Persona","Telefono","Leccion","Estado","Acepto","Fecha","Observacion"];
+        const lines = [header.join(",")];
+        Object.values(state.progress || {}).forEach(p => {
+            const student = state.students.find(s => s.id === p.studentId) || {};
+            const record = state.records.find(r => r.studentId === p.studentId && r.beliefId === p.beliefId);
+            lines.push([
+                p.studentName,
+                student.phone || "",
+                `${p.beliefId}. ${p.beliefTitle}`,
+                record && record.accepted ? "Aceptada" : p.status,
+                record && record.accepted ? "Si" : "No",
+                p.lastActivity || p.openedAt || "",
+                record && record.note ? record.note : ""
+            ].map(csv).join(","));
+        });
+        downloadFile("registros_la_fe_de_jesus.csv", lines.join("\n"), "text/csv;charset=utf-8");
+    }
+    function csv(value){return `"${String(value).replaceAll('"','""')}"`}
+    function downloadFile(name, content, type){
+        const blob = new Blob([content], {type});
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = name;
+        link.click();
+        URL.revokeObjectURL(link.href);
+    }
+    function clearAllRecords(){
+        if(confirm("Esto borrará estudiantes, respuestas y decisiones guardadas en este navegador. ¿Continuar?")){
+            localStorage.removeItem(STORAGE_KEY);
+            currentStudentId = "";
+            renderStudent();
+            renderAdmin();
+        }
+    }
+    function init(){
+        const state = getState();
+        currentStudentId = state.students.length ? state.students[state.students.length - 1].id : "";
+        renderStudent();
+        renderBeliefs();
+        showLanding();
+    }
+    init();
+</script>
+</body>
+</html>
